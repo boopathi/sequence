@@ -99,6 +99,8 @@ const possibleGames = {
   },
 } as const;
 
+export type GameSetup = keyof typeof possibleGames;
+
 export class Game {
   board = new Board();
 
@@ -109,7 +111,7 @@ export class Game {
 
   gameState = "";
 
-  constructor(public gameSetup: keyof typeof possibleGames) {
+  constructor(public gameSetup: GameSetup) {
     this.numPlayers = possibleGames[gameSetup].numPlayers;
     this.numTeams = possibleGames[gameSetup].numTeams;
   }
@@ -117,9 +119,18 @@ export class Game {
   playTurn(loc: Location) {
     this.board.place(loc, this.currentChip());
     const status = this.board.check();
+    if (this.currentPlayer >= this.numPlayers - 1) {
+      this.currentPlayer = 0;
+    } else {
+      this.currentPlayer++;
+    }
   }
 
-  private currentChip() {
+  get(loc: Location) {
+    return this.board.get(loc);
+  }
+
+  currentChip() {
     switch (this.numTeams) {
       case 2:
         return [BoardState.RED_CHIP, BoardState.BLUE_CHIP][
