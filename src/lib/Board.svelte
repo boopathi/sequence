@@ -36,7 +36,7 @@
               : "hidden"}
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
-            class="grid gap-1 bg-base-200 drop-shadow-sm rounded  place-content-center"
+            class="relative grid gap-1 bg-base-200 drop-shadow-sm rounded place-content-center"
             class:cursor-pointer={!isRemoving || state === BoardState.EMPTY}
             class:cursor-no-drop={isRemoving}
             class:scale-90={state !== BoardState.EMPTY || isFrozen}
