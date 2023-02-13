@@ -13,7 +13,9 @@
   );
 </script>
 
-<div class="grid px-2 m-auto max-w-[840px] min-w-[360px] gap-1">
+<div
+  class="grid p-2 m-auto max-w-[840px] min-w-[360px] gap-1 min-h-[560px] h-remaining-10 sm:h-remaining-6"
+>
   {#each boardConfig.rows as row, i}
     <div class="grid grid-cols-10 gap-1">
       {#each row as cell, j}

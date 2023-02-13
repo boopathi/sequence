@@ -339,7 +339,7 @@ export class Board {
     this.rows[x][y] = BoardState.EMPTY;
   }
 
-  check() {
+  check(): CheckResult {
     const chunks = this.chunk();
     const reducer = (p: BoardState, d: BoardState) =>
       this.canCount(p, d) ? d : BoardState.EMPTY;
@@ -472,12 +472,11 @@ export class Board {
 }
 
 function findNumOverlap(completions: Completion[], newCompletion: Completion) {
+  let numOverlaps = 0;
   for (const completion of completions) {
-    if (completion.path === newCompletion.path) {
-      return numLocationOverlap(completion.locs, newCompletion.locs);
-    }
+    numOverlaps += numLocationOverlap(completion.locs, newCompletion.locs);
   }
-  return 0;
+  return numOverlaps;
 }
 
 function numLocationOverlap(as: Location[], bs: Location[]) {

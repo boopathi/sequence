@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .h-remaining-1 {
+    height: calc(100vh - 1rem);
+  }
+  .h-remaining-2 {
+    height: calc(100vh - 2rem);
+  }
+  .h-remaining-3 {
+    height: calc(100vh - 3rem);
+  }
+  .h-remaining-4 {
+    height: calc(100vh - 4rem);
+  }
+  .h-remaining-5 {
+    height: calc(100vh - 5rem);
+  }
+  .h-remaining-6 {
+    height: calc(100vh - 6rem);
+  }
+  .h-remaining-7 {
+    height: calc(100vh - 7rem);
+  }
+  .h-remaining-8 {
+    height: calc(100vh - 8rem);
+  }
+  .h-remaining-9 {
+    height: calc(100vh - 9rem);
+  }
+  .h-remaining-10 {
+    height: calc(100vh - 10rem);
+  }
+}

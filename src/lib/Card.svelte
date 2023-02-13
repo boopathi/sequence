@@ -24,7 +24,7 @@
   const num = rest.join("");
 </script>
 
-<div class="absolute px-1 text-sm">
+<div class="absolute px-1 text-md">
   {#if suit === "S" || suit === "C"}
     <span class="text-base-content group-hover:text-neutral-content"
       >{suitSymbol}&nbsp;{num}</span
@@ -33,8 +33,25 @@
     <span class="text-error">{suitSymbol}&nbsp;{num}</span>
   {/if}
 </div>
-<div
-  class={`grid place-content-end py-2 sm:py-0 sm:place-content-center h-14 ${klass}`}
->
+<div class="absolute px-1 text-md rotate-180 right-0 bottom-0">
+  {#if suit === "S" || suit === "C"}
+    <span class="text-base-content group-hover:text-neutral-content"
+      >{suitSymbol}&nbsp;{num}</span
+    >
+  {:else}
+    <span class="text-error">{suitSymbol}&nbsp;{num}</span>
+  {/if}
+</div>
+
+<!-- <div class="absolute text-xl w-full h-full grid place-content-center ">
+  {#if suit === "S" || suit === "C"}
+    <span class="text-base-content group-hover:text-neutral-content"
+      >{suitSymbol}</span
+    >
+  {:else}
+    <span class="text-error">{suitSymbol}</span>
+  {/if}
+</div> -->
+<div class={`grid place-content-center ${klass}`}>
   <slot />
 </div>
