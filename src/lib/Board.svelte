@@ -34,10 +34,8 @@
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
             class="group grid gap-1 bg-base-200 drop-shadow-sm rounded cursor-pointer place-content-center hover:bg-neutral-focus focus:bg-neutral-focus"
-            class:border-purple-500={isFrozen}
-            class:drop-shadow-md={isFrozen}
-            class:scale-95={isFrozen || state !== BoardState.EMPTY}
-            class:border-gray-500={!isFrozen}
+            class:scale-95={state !== BoardState.EMPTY || isFrozen}
+            class:bg-neutral={isFrozen}
             on:mouseover={() => (visible[i][j] = true)}
             on:mouseout={() => (visible[i][j] = false)}
             on:blur={() => (visible[i][j] = false)}
