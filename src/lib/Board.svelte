@@ -4,6 +4,7 @@
   import Chip from "./Chip.svelte";
   import { BoardState, Game } from "./game";
 
+  export let currentChip: BoardState;
   export let game: Game;
   export let playTurn: (loc: Location) => any;
   const visible = Array.from({ length: boardConfig.rows.length }, () =>
@@ -11,17 +12,32 @@
   );
 </script>
 
-<div class="grid w-[960px] m-auto">
+<div class="grid w-[840px] m-auto gap-1">
   {#each boardConfig.rows as row, i}
-    <div class="grid grid-cols-10">
+    <div class="grid grid-cols-10 gap-1">
       {#each row as cell, j}
         {#if cell === Space.CORNER}
-          <div class="grid border border-black place-content-center">
+          <div
+            class="grid gap-1 bg-base-200 drop-shadow-sm rounded place-content-center"
+          >
             <Chip val={BoardState.CORNER} />
           </div>
         {:else}
+          {@const isFrozen = game.isFrozen([i, j])}
+          {@const state = game.get([i, j])}
+          {@const visibility =
+            state !== BoardState.EMPTY
+              ? "visible"
+              : visible[i][j]
+              ? "partial"
+              : "hidden"}
+          {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
-            class="grid border border-black place-content-center hover:bg-sky-400"
+            class="group grid gap-1 bg-base-200 drop-shadow-sm rounded cursor-pointer place-content-center transition-scale duration-100 hover:bg-neutral-focus focus:bg-neutral-focus"
+            class:border-purple-500={isFrozen}
+            class:drop-shadow-md={isFrozen}
+            class:scale-95={isFrozen || state !== BoardState.EMPTY}
+            class:border-gray-500={!isFrozen}
             on:mouseover={() => (visible[i][j] = true)}
             on:mouseout={() => (visible[i][j] = false)}
             on:blur={() => (visible[i][j] = false)}
@@ -29,13 +45,9 @@
             on:click={playTurn([i, j])}
             on:keypress={playTurn([i, j])}
           >
-            {#if game.get([i, j]) === BoardState.EMPTY}
-              <Card card={cell} class="" />
-            {:else}
-              <Card card={cell}>
-                <Chip val={game.get([i, j])} />
-              </Card>
-            {/if}
+            <Card card={cell} class="card-body">
+              <Chip val={chip} {visibility} class={`transition-opacity`} />
+            </Card>
           </div>
         {/if}
       {/each}

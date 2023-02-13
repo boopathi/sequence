@@ -34,6 +34,11 @@ export enum CompletionPath {
   COL = "COL",
 }
 
+export interface HistoryItem {
+  loc: Location;
+  chip: BoardState;
+}
+
 export interface Completion {
   state: BoardState;
   path: CompletionPath;
@@ -104,8 +109,13 @@ export type GameSetup = keyof typeof possibleGames;
 export class Game {
   board = new Board();
 
+  history: HistoryItem[] = [];
+
   numPlayers: number;
   numTeams: number;
+  numSequences = 2;
+
+  status = this.board.check();
 
   currentPlayer = 0;
 
@@ -117,8 +127,15 @@ export class Game {
   }
 
   playTurn(loc: Location) {
-    this.board.place(loc, this.currentChip());
-    const status = this.board.check();
+    if (this.isDone()) {
+      throw new Error("ERR_GAME_OVER: Game over");
+    }
+    const chip = this.currentChip();
+
+    this.board.place(loc, chip);
+    this.history.push({ loc, chip });
+    this.status = this.board.check();
+
     if (this.currentPlayer >= this.numPlayers - 1) {
       this.currentPlayer = 0;
     } else {
@@ -126,8 +143,78 @@ export class Game {
     }
   }
 
+  hasUndo() {
+    return this.history.length > 0;
+  }
+
+  undo() {
+    const lastMove = this.history.pop();
+    if (lastMove) {
+      this.board.remove(lastMove.loc);
+    }
+    this.status = this.board.check();
+    if (this.currentPlayer <= 0) {
+      this.currentPlayer = this.numPlayers - 1;
+    } else {
+      this.currentPlayer--;
+    }
+  }
+
+  isDone() {
+    const score = this.score();
+    for (const s of score) {
+      if (s.score >= this.numSequences) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   get(loc: Location) {
     return this.board.get(loc);
+  }
+
+  getFrozen(loc: Location) {
+    return this.status.completed.find((c) => {
+      return c.locs.some((l) => l[0] === loc[0] && l[1] === loc[1]);
+    })?.state;
+  }
+
+  isFrozen(loc: Location) {
+    const ret = this.status.completed.some((c) => {
+      return c.locs.some((l) => l[0] === loc[0] && l[1] === loc[1]);
+    });
+    return ret;
+  }
+
+  score() {
+    let red = 0;
+    let blue = 0;
+    let green = 0;
+    for (const c of this.status.completed) {
+      switch (c.state) {
+        case BoardState.RED_CHIP:
+          red++;
+          break;
+        case BoardState.BLUE_CHIP:
+          blue++;
+          break;
+        case BoardState.GREEN_CHIP:
+          green++;
+          break;
+      }
+    }
+    if (this.numTeams === 2)
+      return [
+        { team: BoardState.RED_CHIP, score: red },
+        { team: BoardState.BLUE_CHIP, score: blue },
+      ];
+    else
+      return [
+        { team: BoardState.RED_CHIP, score: red },
+        { team: BoardState.BLUE_CHIP, score: blue },
+        { team: BoardState.GREEN_CHIP, score: green },
+      ];
   }
 
   currentChip() {

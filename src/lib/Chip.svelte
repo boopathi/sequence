@@ -2,7 +2,7 @@
   import { BoardState } from "./game";
 
   export let val: BoardState;
-  export let partial = false;
+  export let visibility = "visible";
 
   let klass: string = "";
 
@@ -11,25 +11,27 @@
   let chipColor = "black";
   $: switch (val) {
     case BoardState.RED_CHIP:
-      chipColor = "red";
+      chipColor = "error";
       break;
     case BoardState.BLUE_CHIP:
-      chipColor = "blue";
+      chipColor = "info";
       break;
     case BoardState.GREEN_CHIP:
-      chipColor = "green";
+      chipColor = "success";
       break;
     case BoardState.CORNER:
-      chipColor = "gray";
+      chipColor = "base-content";
       break;
   }
 </script>
 
 <svg
-  class={`m-2 ${partial ? " opacity-75" : ""} ${klass}`}
-  fill={chipColor}
-  height="32px"
-  width="32px"
+  class={`m-2 transition-opacity duration-100 fill-${chipColor} ${klass}`}
+  class:opacity-0={visibility === "hidden"}
+  class:opacity-80={visibility === "partial"}
+  class:opacity-100={visibility === "visible"}
+  height="24px"
+  width="24px"
   version="1.1"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"

@@ -30,5 +30,10 @@
     "vite": "^4.0.0",
     "vitest": "^0.28.3"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@zerodevx/svelte-toast": "^1.0.0-rc.1",
+    "daisyui": "^2.50.0",
+    "theme-change": "^2.3.0"
+  }
 }

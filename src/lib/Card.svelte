@@ -24,11 +24,13 @@
   const num = rest.join("");
 </script>
 
-<div class="absolute">
+<div class="absolute px-1 text-sm">
   {#if suit === "S" || suit === "C"}
-    <span class="text-black">{suitSymbol}&nbsp;{num}</span>
+    <span class="text-base-content group-hover:text-neutral-content"
+      >{suitSymbol}&nbsp;{num}</span
+    >
   {:else}
-    <span class="text-red-500">{suitSymbol}&nbsp;{num}</span>
+    <span class="text-error">{suitSymbol}&nbsp;{num}</span>
   {/if}
 </div>
 <div class={`grid place-content-center h-16 ${klass}`}>
