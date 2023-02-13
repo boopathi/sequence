@@ -3,9 +3,7 @@
   import { SvelteToast } from "@zerodevx/svelte-toast";
 
   const toastOptions = {
-    theme: {
-      "--toastWidth": "50%",
-    },
+    theme: {},
   };
 </script>
 

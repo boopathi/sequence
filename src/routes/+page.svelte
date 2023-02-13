@@ -93,13 +93,16 @@
   });
 </script>
 
-<div class="">
+<div class="max-w-[960px] m-auto">
   <header
-    class="min-h-16 mb-6 sm:mb-2 px-2 items-center justify-between grid grid-flow-row sm:grid-flow-col sm:auto-cols-max bg-base-100"
+    class="min-h-16 mb-6 sm:mb-2 px-2 grid gap-2 grid-cols-[min-content_1fr] sm:grid-cols-[min-content_1fr_min-content_min-content] items-center bg-base-100"
   >
-    <Title><a href="/">Sequence</a></Title>
+    <div class="justify-self-start">
+      <Title><a href="/">Sequence</a></Title>
+    </div>
+
     <div class="flex-none py-2 sm:py-0">
-      <ul class="flex flex-wrap justify-end items-center gap-4">
+      <ul class="flex flex-wrap justify-end items-center gap-2">
         <li>
           <button class="btn btn-outline btn-xs" on:click={reset}>
             Reset
@@ -115,31 +118,6 @@
             Undo
           </button>
         </li>
-        <li class="whitespace-nowrap flex items-center gap-1">
-          <label for="remove" class="label label-xs">Remove</label>
-          <input
-            type="checkbox"
-            id="remove"
-            disabled={!game.hasUndo()}
-            class="toggle toggle-warning toggle-xs"
-            bind:checked={isRemoving}
-          />
-        </li>
-
-        <li class="grid grid-flow-col auto-cols-max gap-2">
-          {#each score as s, i}
-            {@const isCurrent = s.team === currentChip}
-            <div
-              class={`indicator mx-2 rounded-full ring ring-offset-base-100 ring-offset-2 ${
-                isCurrent ? "ring-success" : "ring-neutral"
-              }`}
-            >
-              <span class="indicator-item badge badge-primary">{s.score}</span>
-              <Chip val={s.team} />
-            </div>
-          {/each}
-        </li>
-
         <li>
           <select class="select select-xs" bind:value={theme}>
             {#each themes as theme}
@@ -148,6 +126,34 @@
           </select>
         </li>
       </ul>
+    </div>
+
+    <div class="whitespace-nowrap flex items-center gap-1">
+      <label
+        for="remove"
+        class="label label-xs"
+        class:toggle-disabled={!game.hasUndo()}>Remove</label
+      >
+      <input
+        type="checkbox"
+        id="remove"
+        disabled={!game.hasUndo()}
+        class="toggle toggle-warning toggle-xs"
+        bind:checked={isRemoving}
+      />
+    </div>
+    <div class="grid grid-flow-col items-center justify-center gap-2">
+      {#each score as s, i}
+        {@const isCurrent = s.team === currentChip}
+        <div
+          class={`indicator mx-2 rounded-full ring ring-offset-base-100 ring-offset-2 ${
+            isCurrent ? "ring-success" : "ring-neutral"
+          }`}
+        >
+          <span class="indicator-item badge badge-primary">{s.score}</span>
+          <Chip val={s.team} class={`${isCurrent ? "animate-spin" : ""}`} />
+        </div>
+      {/each}
     </div>
   </header>
 
