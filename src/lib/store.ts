@@ -15,6 +15,11 @@ export function createGame(gameSetup: GameSetup) {
         game.playTurn(loc);
         return game;
       }),
+    remove: (loc: Location) =>
+      update((game) => {
+        game.remove(loc);
+        return game;
+      }),
     undo: () =>
       update((game) => {
         game.undo();

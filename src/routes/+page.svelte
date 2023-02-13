@@ -51,9 +51,17 @@
   let game: Game;
   let currentChip: BoardState;
   let score: { team: BoardState; score: number }[];
+
+  let isRemoving = false;
+
   let playTurn = (loc: Location) => {
     try {
-      gameStore.playTurn(loc);
+      if (isRemoving) {
+        gameStore.remove(loc);
+        isRemoving = false;
+      } else {
+        gameStore.playTurn(loc);
+      }
     } catch (e) {
       if (e instanceof Error) failure(e.message);
       else failure(e as any);
@@ -75,6 +83,7 @@
       else failure(e as any);
     }
   };
+
   gameStore.subscribe((g) => {
     game = g;
     score = game.score();
@@ -88,7 +97,7 @@
   >
     <Title><a href="/">Sequence</a></Title>
     <div class="flex-none py-2 sm:py-0">
-      <ul class="grid grid-flow-col items-center justify-end gap-4">
+      <ul class="flex flex-wrap justify-end items-center gap-4">
         <li>
           <button class="btn btn-outline btn-xs" on:click={reset}>
             Reset
@@ -103,6 +112,16 @@
           >
             Undo
           </button>
+        </li>
+        <li class="whitespace-nowrap flex items-center gap-1">
+          <label for="remove" class="label label-xs">Remove</label>
+          <input
+            type="checkbox"
+            id="remove"
+            disabled={!game.hasUndo()}
+            class="toggle toggle-warning toggle-xs"
+            bind:checked={isRemoving}
+          />
         </li>
 
         <li class="grid grid-flow-col auto-cols-max gap-2">
@@ -131,6 +150,6 @@
   </header>
 
   <main>
-    <Board {game} {playTurn} bind:currentChip />
+    <Board {game} {playTurn} bind:currentChip bind:isRemoving />
   </main>
 </div>

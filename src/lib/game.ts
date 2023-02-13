@@ -35,6 +35,7 @@ export enum CompletionPath {
 }
 
 export interface HistoryItem {
+  type: "add" | "remove";
   loc: Location;
   chip: BoardState;
 }
@@ -133,9 +134,34 @@ export class Game {
     const chip = this.currentChip();
 
     this.board.place(loc, chip);
-    this.history.push({ loc, chip });
+    this.history.push({ type: "add", loc, chip });
     this.status = this.board.check();
 
+    if (this.currentPlayer >= this.numPlayers - 1) {
+      this.currentPlayer = 0;
+    } else {
+      this.currentPlayer++;
+    }
+  }
+
+  remove(loc: Location) {
+    if (this.isDone()) {
+      throw new Error("ERR_GAME_OVER: Game over");
+    }
+    const chip = this.currentChip();
+    const cur = this.get(loc);
+    if (cur === BoardState.EMPTY) {
+      throw new Error("ERR_EMPTY_SPACE: No chip to remove");
+    }
+    if (cur === chip) {
+      throw new Error("ERR_OWN_CHIP: Cannot remove own chip");
+    }
+    if (this.isFrozen(loc)) {
+      throw new Error("ERR_FROZEN_CHIP: Cannot remove from completed sequence");
+    }
+    this.board.remove(loc);
+    this.history.push({ type: "remove", loc, chip });
+    this.status = this.board.check();
     if (this.currentPlayer >= this.numPlayers - 1) {
       this.currentPlayer = 0;
     } else {
@@ -150,7 +176,11 @@ export class Game {
   undo() {
     const lastMove = this.history.pop();
     if (lastMove) {
-      this.board.remove(lastMove.loc);
+      if (lastMove.type === "add") {
+        this.board.remove(lastMove.loc);
+      } else {
+        this.board.place(lastMove.loc, this.currentChip());
+      }
     }
     this.status = this.board.check();
     if (this.currentPlayer <= 0) {

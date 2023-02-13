@@ -4,7 +4,7 @@
 
   const toastOptions = {
     theme: {
-      "--toastWidth": "40rem",
+      "--toastWidth": "50%",
     },
   };
 </script>

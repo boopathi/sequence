@@ -6,6 +6,7 @@
 
   export let currentChip: BoardState;
   export let game: Game;
+  export let isRemoving: boolean;
   export let playTurn: (loc: Location) => any;
   const visible = Array.from({ length: boardConfig.rows.length }, () =>
     Array.from({ length: boardConfig.rows[0].length }, () => false),
@@ -33,7 +34,8 @@
               : "hidden"}
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
-            class=" grid gap-1 bg-base-200 drop-shadow-sm rounded cursor-pointer place-content-center"
+            class="grid gap-1 bg-base-200 drop-shadow-sm rounded cursor-pointer place-content-center"
+            class:cursor-no-drop={isRemoving}
             class:scale-90={state !== BoardState.EMPTY || isFrozen}
             class:outline={isFrozen}
             class:outline-primary={isFrozen}
