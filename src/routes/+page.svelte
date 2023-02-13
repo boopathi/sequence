@@ -25,15 +25,25 @@
     "dracula",
   ];
 
-  let theme = "dracula";
+  let theme = getTheme();
+
+  function getTheme() {
+    return typeof document !== "undefined"
+      ? localStorage.getItem("theme") ||
+          document.documentElement.dataset.theme ||
+          "dracula"
+      : "dracula";
+  }
 
   $: theme,
     typeof document !== "undefined" &&
-      (document.documentElement.dataset.theme = theme);
+      ((document.documentElement.dataset.theme = theme),
+      localStorage.setItem("theme", theme));
 
   onMount(() => {
     themeChange(false); // false parameter is required for svelte
-    document.documentElement.dataset.theme = "dracula";
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") || theme;
   });
 
   const gameStore = createGame("2vs2");
