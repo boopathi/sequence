@@ -2,7 +2,7 @@
   import { boardConfig, Space, type Location } from "./board-config";
   import Card from "./Card.svelte";
   import Chip from "./Chip.svelte";
-  import { BoardState, Game } from "./game";
+  import { Board, BoardState, Game } from "./game";
 
   export let currentChip: BoardState;
   export let game: Game;
@@ -33,9 +33,14 @@
               : "hidden"}
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
-            class="group grid gap-1 bg-base-200 drop-shadow-sm rounded cursor-pointer place-content-center hover:bg-neutral-focus focus:bg-neutral-focus"
-            class:scale-95={state !== BoardState.EMPTY || isFrozen}
-            class:bg-neutral={isFrozen}
+            class=" grid gap-1 bg-base-200 drop-shadow-sm rounded cursor-pointer place-content-center"
+            class:scale-90={state !== BoardState.EMPTY || isFrozen}
+            class:outline={isFrozen}
+            class:outline-primary={isFrozen}
+            class:bg-base-300={state !== BoardState.EMPTY}
+            class:group={state === BoardState.EMPTY}
+            class:hover:bg-neutral-focus={state === BoardState.EMPTY}
+            class:focus:bg-neutral-focus={state === BoardState.EMPTY}
             on:mouseover={() => (visible[i][j] = true)}
             on:mouseout={() => (visible[i][j] = false)}
             on:blur={() => (visible[i][j] = false)}
