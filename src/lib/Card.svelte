@@ -34,7 +34,7 @@
   {/if}
 </div>
 <div
-  class={`grid place-content-end py-2 sm:py-0 sm:place-content-center h-16 ${klass}`}
+  class={`grid place-content-end py-2 sm:py-0 sm:place-content-center h-14 ${klass}`}
 >
   <slot />
 </div>

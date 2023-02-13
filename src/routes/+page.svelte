@@ -83,10 +83,12 @@
 </script>
 
 <div class="">
-  <header class="navbar bg-base-100">
+  <header
+    class="min-h-16 mb-6 sm:mb-2 px-2 items-center justify-between grid grid-flow-row sm:grid-flow-col sm:auto-cols-max bg-base-100"
+  >
     <Title><a href="/">Sequence</a></Title>
-    <div class="flex-none">
-      <ul class="grid grid-flow-col auto-cols-max items-center gap-4">
+    <div class="flex-none py-2 sm:py-0">
+      <ul class="grid grid-flow-col items-center justify-end gap-4">
         <li>
           <button class="btn btn-outline btn-xs" on:click={reset}>
             Reset
@@ -116,16 +118,13 @@
             </div>
           {/each}
         </li>
-        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+
         <li>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <div>
-            <select class="select select-xs" bind:value={theme}>
-              {#each themes as theme}
-                <option value={theme}>{theme}</option>
-              {/each}
-            </select>
-          </div>
+          <select class="select select-xs" bind:value={theme}>
+            {#each themes as theme}
+              <option value={theme}>{theme}</option>
+            {/each}
+          </select>
         </li>
       </ul>
     </div>
