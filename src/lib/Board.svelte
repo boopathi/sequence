@@ -12,7 +12,7 @@
   );
 </script>
 
-<div class="grid w-[840px] m-auto gap-1">
+<div class="grid px-2 m-auto max-w-[840px] min-w-[360px] gap-1">
   {#each boardConfig.rows as row, i}
     <div class="grid grid-cols-10 gap-1">
       {#each row as cell, j}
@@ -33,7 +33,7 @@
               : "hidden"}
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
-            class="group grid gap-1 bg-base-200 drop-shadow-sm rounded cursor-pointer place-content-center transition-scale duration-100 hover:bg-neutral-focus focus:bg-neutral-focus"
+            class="group grid gap-1 bg-base-200 drop-shadow-sm rounded cursor-pointer place-content-center hover:bg-neutral-focus focus:bg-neutral-focus"
             class:border-purple-500={isFrozen}
             class:drop-shadow-md={isFrozen}
             class:scale-95={isFrozen || state !== BoardState.EMPTY}
@@ -45,8 +45,8 @@
             on:click={playTurn([i, j])}
             on:keypress={playTurn([i, j])}
           >
-            <Card card={cell} class="card-body">
-              <Chip val={chip} {visibility} class={`transition-opacity`} />
+            <Card card={cell} class="">
+              <Chip val={chip} {visibility} />
             </Card>
           </div>
         {/if}

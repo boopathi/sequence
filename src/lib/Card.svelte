@@ -33,6 +33,8 @@
     <span class="text-error">{suitSymbol}&nbsp;{num}</span>
   {/if}
 </div>
-<div class={`grid place-content-center h-16 ${klass}`}>
+<div
+  class={`grid place-content-end py-2 sm:py-0 sm:place-content-center h-16 ${klass}`}
+>
   <slot />
 </div>

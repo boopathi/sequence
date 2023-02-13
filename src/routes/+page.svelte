@@ -72,79 +72,52 @@
   });
 </script>
 
-<div class="min-w-[960px]">
+<div class="">
   <header class="navbar bg-base-100">
     <Title><a href="/">Sequence</a></Title>
     <div class="flex-none">
-      <nav>
-        <ul class="menu menu-horizontal px-1 items-center gap-2">
-          <li>
-            <button class="btn btn-outline" on:click={reset}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 3v5h5" />
-                <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" />
-                <path d="M12 7v5l4 2" />
-              </svg>
+      <ul class="grid grid-flow-col auto-cols-max items-center gap-4">
+        <li>
+          <button class="btn btn-outline btn-xs" on:click={reset}>
+            Reset
+          </button>
+        </li>
+        <li>
+          <button
+            on:click={undo}
+            disabled={!game.hasUndo()}
+            class="btn btn-outline btn-xs"
+            class:btn-disabled={!game.hasUndo()}
+          >
+            Undo
+          </button>
+        </li>
 
-              Reset
-            </button>
-          </li>
-          <li>
-            <button
-              on:click={undo}
-              disabled={!game.hasUndo()}
-              class="btn btn-outline"
-              class:btn-disabled={!game.hasUndo()}
+        <li class="grid grid-flow-col auto-cols-max gap-2">
+          {#each score as s, i}
+            {@const isCurrent = s.team === currentChip}
+            <div
+              class={`indicator mx-2 rounded-full ring ring-offset-base-100 ring-offset-2 ${
+                isCurrent ? "ring-success" : "ring-neutral"
+              }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 7v6h6" />
-                <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
-              </svg>
-              Undo</button
-            >
-          </li>
-
-          <li>
-            {#each score as s, i}
-              <span><Chip val={s.team} />{s.score}</span>
-            {/each}
-          </li>
-          <li>
-            <span>Current Player: <Chip bind:val={currentChip} /></span>
-          </li>
-          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-          <li>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <div>
-              <select class="select" bind:value={theme}>
-                {#each themes as theme}
-                  <option value={theme}>{theme}</option>
-                {/each}
-              </select>
+              <span class="indicator-item badge badge-primary">{s.score}</span>
+              <Chip val={s.team} />
             </div>
-          </li>
-        </ul>
-      </nav>
+          {/each}
+        </li>
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+        <li>
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <div>
+            <select class="select select-xs" bind:value={theme}>
+              {#each themes as theme}
+                <option value={theme}>{theme}</option>
+              {/each}
+            </select>
+          </div>
+        </li>
+      </ul>
     </div>
   </header>
 

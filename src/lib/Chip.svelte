@@ -26,7 +26,7 @@
 </script>
 
 <svg
-  class={`m-2 transition-opacity duration-100 fill-${chipColor} ${klass}`}
+  class={`fill-${chipColor} ${klass}`}
   class:opacity-0={visibility === "hidden"}
   class:opacity-80={visibility === "partial"}
   class:opacity-100={visibility === "visible"}
