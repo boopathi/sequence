@@ -24,22 +24,24 @@
   const num = rest.join("");
 </script>
 
-<div class="absolute px-1 text-md">
+<div class="absolute px-1 text-xs sm:text-base tracking-wide">
   {#if suit === "S" || suit === "C"}
     <span class="text-base-content group-hover:text-neutral-content"
-      >{suitSymbol}&nbsp;{num}</span
+      >{suitSymbol}{num}</span
     >
   {:else}
-    <span class="text-error">{suitSymbol}&nbsp;{num}</span>
+    <span class="text-error">{suitSymbol}{num}</span>
   {/if}
 </div>
-<div class="absolute px-1 text-md rotate-180 right-0 bottom-0">
+<div
+  class="absolute px-1 text-xs sm:text-base rotate-180 right-0 bottom-0 tracking-wide"
+>
   {#if suit === "S" || suit === "C"}
     <span class="text-base-content group-hover:text-neutral-content"
-      >{suitSymbol}&nbsp;{num}</span
+      >{suitSymbol}{num}</span
     >
   {:else}
-    <span class="text-error">{suitSymbol}&nbsp;{num}</span>
+    <span class="text-error">{suitSymbol}{num}</span>
   {/if}
 </div>
 
