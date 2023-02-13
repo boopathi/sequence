@@ -70,6 +70,7 @@
   let undo = () => {
     try {
       gameStore.undo();
+      isRemoving = false;
     } catch (e) {
       if (e instanceof Error) failure(e.message);
       else failure(e as any);
@@ -78,6 +79,7 @@
   let reset = () => {
     try {
       gameStore.reset();
+      isRemoving = false;
     } catch (e) {
       if (e instanceof Error) failure(e.message);
       else failure(e as any);

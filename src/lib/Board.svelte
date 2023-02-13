@@ -2,7 +2,7 @@
   import { boardConfig, Space, type Location } from "./board-config";
   import Card from "./Card.svelte";
   import Chip from "./Chip.svelte";
-  import { Board, BoardState, Game } from "./game";
+  import { BoardState, Game } from "./game";
 
   export let currentChip: BoardState;
   export let game: Game;
@@ -47,8 +47,14 @@
             on:mouseout={() => (visible[i][j] = false)}
             on:blur={() => (visible[i][j] = false)}
             on:focus={() => (visible[i][j] = true)}
-            on:click={playTurn([i, j])}
-            on:keypress={playTurn([i, j])}
+            on:click={() => {
+              playTurn([i, j]);
+              visible[i][j] = false;
+            }}
+            on:keypress={() => {
+              playTurn([i, j]);
+              visible[i][j] = false;
+            }}
           >
             <Card card={cell} class="">
               <Chip val={chip} {visibility} />
