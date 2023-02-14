@@ -33,4 +33,19 @@
   .h-remaining-10 {
     height: calc(100vh - 10rem);
   }
+  .h-remaining-11 {
+    height: calc(100vh - 11rem);
+  }
+  .h-remaining-12 {
+    height: calc(100vh - 12rem);
+  }
+  .h-remaining-13 {
+    height: calc(100vh - 13rem);
+  }
+  .h-remaining-14 {
+    height: calc(100vh - 14rem);
+  }
+  .h-remaining-15 {
+    height: calc(100vh - 15rem);
+  }
 }

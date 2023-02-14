@@ -25,6 +25,7 @@ export function createGame(gameSetup: GameSetup) {
         game.undo();
         return game;
       }),
-    reset: () => set(new Game(gameSetup)),
+    reset: (newGameSetup?: GameSetup) =>
+      set(new Game(newGameSetup || gameSetup)),
   };
 }

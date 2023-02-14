@@ -52,7 +52,7 @@ export enum Team {
   GREEN = "GREEN",
 }
 
-const possibleGames = {
+export const possibleGames = {
   "1vs1": {
     title: "1 vs 1",
     numTeams: 2,

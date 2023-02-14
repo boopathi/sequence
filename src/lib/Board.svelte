@@ -7,6 +7,7 @@
   export let currentChip: BoardState;
   export let game: Game;
   export let isRemoving: boolean;
+  export let doubleClick: boolean;
   export let playTurn: (loc: Location) => any;
   const visible = Array.from({ length: boardConfig.rows.length }, () =>
     Array.from({ length: boardConfig.rows[0].length }, () => false),
@@ -14,7 +15,7 @@
 </script>
 
 <div
-  class="grid p-2 m-auto max-w-[840px] min-w-[360px] gap-1 min-h-[560px] h-remaining-10 sm:h-remaining-6"
+  class="grid p-2 m-auto max-w-[840px] min-w-[360px] gap-1 h-remaining-12 sm:h-remaining-10 select-none"
 >
   {#each boardConfig.rows as row, i}
     <div class="grid grid-cols-10 gap-1">
@@ -36,7 +37,7 @@
               : "hidden"}
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
-            class="relative grid gap-1 bg-base-200 drop-shadow-sm rounded place-content-center"
+            class="relative grid gap-1 bg-base-200 drop-shadow-sm rounded content-end justify-center sm:place-content-center"
             class:cursor-pointer={!isRemoving || state === BoardState.EMPTY}
             class:cursor-no-drop={isRemoving}
             class:scale-90={state !== BoardState.EMPTY || isFrozen}
@@ -50,13 +51,24 @@
             on:mouseout={() => (visible[i][j] = false)}
             on:blur={() => (visible[i][j] = false)}
             on:focus={() => (visible[i][j] = true)}
+            on:dblclick={(e) => {
+              if (doubleClick) {
+                e.preventDefault();
+                playTurn([i, j]);
+                visible[i][j] = false;
+              }
+            }}
             on:click={() => {
-              playTurn([i, j]);
-              visible[i][j] = false;
+              if (!doubleClick) {
+                playTurn([i, j]);
+                visible[i][j] = false;
+              }
             }}
             on:keypress={() => {
-              playTurn([i, j]);
-              visible[i][j] = false;
+              if (!doubleClick) {
+                playTurn([i, j]);
+                visible[i][j] = false;
+              }
             }}
           >
             <Card card={cell} class="">
