@@ -15,7 +15,7 @@
 </script>
 
 <div
-  class="grid p-2 m-auto max-w-[840px] min-w-[360px] gap-1 h-remaining-12 sm:h-remaining-10 select-none"
+  class="grid p-2 m-auto max-w-[840px] min-w-[360px] gap-1 h-remaining-14 sm:h-remaining-10 select-none"
 >
   {#each boardConfig.rows as row, i}
     <div class="grid grid-cols-10 gap-1">
