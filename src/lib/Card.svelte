@@ -26,7 +26,7 @@
 
 <div class="absolute px-1 text-xs sm:text-base tracking-wide">
   {#if suit === "S" || suit === "C"}
-    <span class="text-base-content group-hover:text-neutral-content">
+    <span class="text-base-content">
       {suitSymbol}{num}
     </span>
   {:else}
@@ -37,7 +37,7 @@
   class="invisible sm:visible absolute px-1 text-xs sm:text-base rotate-180 right-0 bottom-0 tracking-wide"
 >
   {#if suit === "S" || suit === "C"}
-    <span class="text-base-content group-hover:text-neutral-content">
+    <span class="text-base-content">
       {suitSymbol}{num}
     </span>
   {:else}
@@ -47,13 +47,13 @@
 
 <!-- <div class="absolute text-xl w-full h-full grid place-content-center ">
   {#if suit === "S" || suit === "C"}
-    <span class="text-base-content group-hover:text-neutral-content"
+    <span class="text-base-content"
       >{suitSymbol}</span
     >
   {:else}
     <span class="text-error">{suitSymbol}</span>
   {/if}
 </div> -->
-<div class={`grid place-content-center pb-2 sm:pb-0 ${klass}`}>
+<div class={`grid place-content-center pb-1 sm:pb-0 ${klass}`}>
   <slot />
 </div>

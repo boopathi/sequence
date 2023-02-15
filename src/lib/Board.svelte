@@ -9,9 +9,6 @@
   export let isRemoving: boolean;
   export let doubleClick: boolean;
   export let playTurn: (loc: Location) => any;
-  const visible = Array.from({ length: boardConfig.rows.length }, () =>
-    Array.from({ length: boardConfig.rows[0].length }, () => false),
-  );
 </script>
 
 <div
@@ -30,11 +27,7 @@
           {@const isFrozen = game.isFrozen([i, j])}
           {@const state = game.get([i, j])}
           {@const visibility =
-            state !== BoardState.EMPTY
-              ? "visible"
-              : visible[i][j]
-              ? "partial"
-              : "hidden"}
+            state !== BoardState.EMPTY ? "visible" : "hidden"}
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
             class="relative grid gap-1 bg-base-200 drop-shadow-sm rounded content-end justify-center sm:place-content-center"
@@ -45,29 +38,20 @@
             class:outline-primary={isFrozen}
             class:bg-base-300={state !== BoardState.EMPTY}
             class:group={state === BoardState.EMPTY}
-            class:hover:bg-neutral-focus={state === BoardState.EMPTY}
-            class:focus:bg-neutral-focus={state === BoardState.EMPTY}
-            on:mouseover={() => (visible[i][j] = true)}
-            on:mouseout={() => (visible[i][j] = false)}
-            on:blur={() => (visible[i][j] = false)}
-            on:focus={() => (visible[i][j] = true)}
             on:dblclick={(e) => {
               if (doubleClick) {
                 e.preventDefault();
                 playTurn([i, j]);
-                visible[i][j] = false;
               }
             }}
             on:click={() => {
               if (!doubleClick) {
                 playTurn([i, j]);
-                visible[i][j] = false;
               }
             }}
             on:keypress={() => {
               if (!doubleClick) {
                 playTurn([i, j]);
-                visible[i][j] = false;
               }
             }}
           >
