@@ -12,47 +12,10 @@
   import Title from "$lib/Title.svelte";
   import { failure } from "$lib/toast";
   import { onMount } from "svelte";
-  import { themeChange } from "theme-change";
-  import Setting from "$lib/Setting.svelte";
-
-  const themes = [
-    "light",
-    "dark",
-    "cupcake",
-    "synthwave",
-    "retro",
-    "cyberpunk",
-    "valentine",
-    "lofi",
-    "pastel",
-    "fantasy",
-    "wireframe",
-    "luxury",
-    "dracula",
-  ];
+  import About from "$lib/About.svelte";
+  import Options from "$lib/Options.svelte";
 
   let gameSetup: GameSetup = "1vs1";
-
-  let theme = getTheme();
-
-  function getTheme() {
-    return typeof document !== "undefined"
-      ? localStorage.getItem("theme") ||
-          document.documentElement.dataset.theme ||
-          "dracula"
-      : "dracula";
-  }
-
-  $: theme,
-    typeof document !== "undefined" &&
-      ((document.documentElement.dataset.theme = theme),
-      localStorage.setItem("theme", theme));
-
-  onMount(() => {
-    themeChange(false); // false parameter is required for svelte
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") || theme;
-  });
 
   let gameStore = createGame(gameSetup);
 
@@ -144,7 +107,7 @@
         <label for="options-modal" class="btn btn-outline btn-xs">
           Options
         </label>
-        <button class="btn btn-outline btn-xs">About</button>
+        <label for="about-modal" class="btn btn-outline btn-xs">About</label>
         <button
           class="uppercase btn btn-outline btn-xs"
           class:bg-error={isRemoving}
@@ -212,74 +175,13 @@
         {/if}
       </button>
 
-      <button class="uppercase">Info</button>
+      <label for="about-modal" class="uppercase">About</label>
 
       <label for="options-modal" class="uppercase">Options</label>
     </div>
   </footer>
 </div>
 
-<input type="checkbox" id="options-modal" class="modal-toggle" />
-<div class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box relative">
-    <label
-      for="options-modal"
-      class="btn btn-sm btn-circle absolute right-2 top-2">✕</label
-    >
-    <h3 class="text-lg">OPTIONS</h3>
+<Options bind:gameSetup bind:doubleClick {reset} />
 
-    <div class="divider" />
-
-    <div class="form-control grid grid-flow-row gap-4">
-      <Setting name="Theme">
-        <select class="select select-bordered select-sm" bind:value={theme}>
-          {#each themes as theme}
-            <option value={theme}>{theme}</option>
-          {/each}
-        </select>
-      </Setting>
-
-      <Setting name="Game Setup">
-        <select class="select select-bordered select-sm" bind:value={gameSetup}>
-          {#each Object.keys(possibleGames) as game}
-            <option value={game}>{game.split("vs").join(" vs ")}</option>
-          {/each}
-        </select>
-      </Setting>
-
-      <Setting name="Reset board">
-        <button class="btn btn-sm" on:click={reset}>RESET</button>
-      </Setting>
-
-      <Setting name="Double Click to play">
-        <input type="checkbox" class="checkbox" bind:checked={doubleClick} />
-      </Setting>
-
-      <div class="grid grid-cols-2 gap-4">
-        <button
-          class="btn btn-sm btn-outline"
-          on:click={() => {
-            localStorage.clear();
-            location.reload();
-          }}
-        >
-          Clear
-        </button>
-        <label
-          for="options-modal"
-          class="btn btn-sm btn-primary"
-          on:click={() => {
-            localStorage.setItem("gameSetup", gameSetup);
-            localStorage.setItem("doubleClick", doubleClick.toString());
-          }}
-          on:keypress={() => {
-            localStorage.setItem("gameSetup", gameSetup);
-            localStorage.setItem("doubleClick", doubleClick.toString());
-          }}
-        >
-          Save
-        </label>
-      </div>
-    </div>
-  </div>
-</div>
+<About />
