@@ -475,21 +475,6 @@ export class Board {
   }
 }
 
-// function findCompletion(completions: Completion[], newCompletion: Completion) {
-//   for (const completion of completions) {
-//     if (completion.state === newCompletion.state) {
-//       if (completion.path === newCompletion.path) {
-//         if (completion.locs.length === newCompletion.locs.length) {
-//           if (numLocationOverlap(completion.locs, newCompletion.locs) === 5) {
-//             return true;
-//           }
-//         }
-//       }
-//     }
-//   }
-//   return false;
-// }
-
 function findNumOverlap(completions: Completion[], newCompletion: Completion) {
   let numOverlaps = 0;
   for (const completion of completions) {

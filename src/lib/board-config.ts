@@ -4,12 +4,7 @@ export enum Space {
 
 // prettier-ignore
 export enum Card {
-  // Single eyed jacks remove
-  SINGLE_EYED_JACK = 1001,
-
-  // Double eyed jacks are wild
-  DOUBLED_EYED_JACK,
-
+  
   // spades
 	S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,SQ,SK,SA,
 
@@ -42,3 +37,41 @@ export const boardConfig = {
     [P.CORNER, C.DA, C.DK, C.DQ, C.D10, C.D9, C.D8, C.D7, C.D6, P.CORNER],
   ],
 };
+
+export function cardname(card: Card): string {
+  const [suit, ...num] = Card[card];
+  const n = num.join("");
+  let ret = "";
+  switch (n) {
+    case "A":
+      ret += "Ace";
+      break;
+    case "K":
+      ret += "King";
+      break;
+    case "Q":
+      ret += "Queen";
+      break;
+    case "J":
+      ret += "Jack";
+      break;
+    default:
+      ret += n;
+  }
+  ret += " of ";
+  switch (suit) {
+    case "S":
+      ret += "Spades";
+      break;
+    case "C":
+      ret += "Clubs";
+      break;
+    case "D":
+      ret += "Diamonds";
+      break;
+    case "H":
+      ret += "Hearts";
+      break;
+  }
+  return ret;
+}

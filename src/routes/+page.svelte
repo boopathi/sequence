@@ -99,8 +99,8 @@
   <header
     class="min-h-16 mb-6 sm:mb-2 px-2 grid gap-2 grid-cols-3 items-center bg-base-100"
   >
-    <div class="">
-      <Title><a href="/">Sequence</a></Title>
+    <div>
+      <Title />
     </div>
 
     <div class="flex justify-center place-items-center portrait:invisible">
@@ -113,10 +113,22 @@
         >
           Undo
         </button>
-        <label for="options-modal" class="btn btn-outline btn-xs">
+        <label
+          for="options-modal"
+          class="btn btn-outline btn-xs"
+          role="menuitem"
+          tabindex="0"
+        >
           Options
         </label>
-        <label for="about-modal" class="btn btn-outline btn-xs">About</label>
+        <label
+          for="about-modal"
+          class="btn btn-outline btn-xs"
+          role="menuitem"
+          tabindex="0"
+        >
+          About
+        </label>
         <button
           class="uppercase btn btn-outline btn-xs"
           class:bg-error={isRemoving}
@@ -185,9 +197,13 @@
         {/if}
       </button>
 
-      <label for="about-modal" class="uppercase">About</label>
+      <label for="about-modal" class="uppercase" role="menuitem" tabindex="0">
+        About</label
+      >
 
-      <label for="options-modal" class="uppercase">Options</label>
+      <label for="options-modal" class="uppercase" role="menuitem" tabindex="0">
+        Options</label
+      >
     </div>
   </footer>
 </div>

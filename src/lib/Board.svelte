@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { boardConfig, Space, type Location } from "./board-config";
+  import {
+    boardConfig,
+    Space,
+    type Location,
+    Card as CardEnum,
+    cardname,
+  } from "./board-config";
   import Card from "./Card.svelte";
   import Chip from "./Chip.svelte";
   import { BoardState, Game } from "./game";
@@ -9,6 +15,7 @@
   export let isRemoving: boolean;
   export let doubleClick: boolean;
   export let fontSize: number;
+
   export let playTurn: (loc: Location) => any;
 </script>
 
@@ -39,6 +46,9 @@
             class:outline-primary={isFrozen}
             class:bg-base-300={state !== BoardState.EMPTY}
             class:group={state === BoardState.EMPTY}
+            tabindex="0"
+            role="button"
+            aria-label={`${cardname(cell)}. row ${i + 1} column ${j + 1}`}
             on:dblclick={(e) => {
               if (doubleClick) {
                 e.preventDefault();
@@ -50,10 +60,8 @@
                 playTurn([i, j]);
               }
             }}
-            on:keypress={() => {
-              if (!doubleClick) {
-                playTurn([i, j]);
-              }
+            on:keypress={(e) => {
+              if (e.key === "Enter") playTurn([i, j]);
             }}
           >
             <Card card={cell} class="" bind:fontSize>
