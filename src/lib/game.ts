@@ -135,7 +135,7 @@ export class Game {
 
     this.board.place(loc, chip);
     this.history.push({ type: "add", loc, chip });
-    this.status = this.board.check();
+    this.updateStatus();
 
     if (this.currentPlayer >= this.numPlayers - 1) {
       this.currentPlayer = 0;
@@ -161,7 +161,7 @@ export class Game {
     }
     this.board.remove(loc);
     this.history.push({ type: "remove", loc, chip });
-    this.status = this.board.check();
+    this.updateStatus();
     if (this.currentPlayer >= this.numPlayers - 1) {
       this.currentPlayer = 0;
     } else {
@@ -182,7 +182,7 @@ export class Game {
         this.board.place(lastMove.loc, this.currentChip());
       }
     }
-    this.status = this.board.check();
+    this.updateStatus();
     if (this.currentPlayer <= 0) {
       this.currentPlayer = this.numPlayers - 1;
     } else {
@@ -215,6 +215,10 @@ export class Game {
       return c.locs.some((l) => l[0] === loc[0] && l[1] === loc[1]);
     });
     return ret;
+  }
+
+  updateStatus() {
+    this.status = this.board.check(this.status);
   }
 
   score() {
@@ -339,7 +343,7 @@ export class Board {
     this.rows[x][y] = BoardState.EMPTY;
   }
 
-  check(): CheckResult {
+  check(prevStatus: CheckResult = { completed: [] }): CheckResult {
     const chunks = this.chunk();
     const reducer = (p: BoardState, d: BoardState) =>
       this.canCount(p, d) ? d : BoardState.EMPTY;
@@ -470,6 +474,21 @@ export class Board {
     return chunks;
   }
 }
+
+// function findCompletion(completions: Completion[], newCompletion: Completion) {
+//   for (const completion of completions) {
+//     if (completion.state === newCompletion.state) {
+//       if (completion.path === newCompletion.path) {
+//         if (completion.locs.length === newCompletion.locs.length) {
+//           if (numLocationOverlap(completion.locs, newCompletion.locs) === 5) {
+//             return true;
+//           }
+//         }
+//       }
+//     }
+//   }
+//   return false;
+// }
 
 function findNumOverlap(completions: Completion[], newCompletion: Completion) {
   let numOverlaps = 0;
