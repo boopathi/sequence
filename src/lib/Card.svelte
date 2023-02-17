@@ -5,6 +5,8 @@
   let klass = "";
   export { klass as class };
 
+  export let fontSize: number;
+
   let [suit, ...rest] = Card[card];
   let suitSymbol: string;
   switch (suit) {
@@ -24,7 +26,14 @@
   const num = rest.join("");
 </script>
 
-<div class="absolute px-1 text-xs sm:text-base tracking-wide">
+<div
+  class="absolute px-1 tracking-wide"
+  class:text-sm={fontSize === 1}
+  class:text-base={fontSize === 2}
+  class:text-lg={fontSize === 3}
+  class:text-xl={fontSize === 4}
+  class:text-2xl={fontSize === 5}
+>
   {#if suit === "S" || suit === "C"}
     <span class="text-base-content">
       {suitSymbol}{num}
@@ -34,7 +43,12 @@
   {/if}
 </div>
 <div
-  class="invisible sm:visible absolute px-1 text-xs sm:text-base rotate-180 right-0 bottom-0 tracking-wide"
+  class="invisible sm:visible absolute px-1 rotate-180 right-0 bottom-0 tracking-wide"
+  class:text-sm={fontSize === 1}
+  class:text-base={fontSize === 2}
+  class:text-lg={fontSize === 3}
+  class:text-xl={fontSize === 4}
+  class:text-2xl={fontSize === 5}
 >
   {#if suit === "S" || suit === "C"}
     <span class="text-base-content">

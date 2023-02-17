@@ -8,6 +8,7 @@
   export let gameSetup: GameSetup;
   export let reset: () => void;
   export let doubleClick: boolean;
+  export let fontSize: number;
 
   const themes = [
     "light",
@@ -57,6 +58,26 @@
       </select>
     </Setting>
 
+    <Setting name="Font Size">
+      <div>
+        <input
+          type="range"
+          min="1"
+          max="5"
+          bind:value={fontSize}
+          class="range"
+          step="1"
+        />
+        <div class="w-full flex justify-between text-xs px-2 items-end">
+          <span class="text-sm">aA</span>
+          <span class="text-base">aA</span>
+          <span class="text-lg">aA</span>
+          <span class="text-xl">aA</span>
+          <span class="text-2xl">aA</span>
+        </div>
+      </div>
+    </Setting>
+
     <Setting name="Game Setup">
       <select class="select select-bordered select-sm" bind:value={gameSetup}>
         {#each Object.keys(possibleGames) as game}
@@ -89,10 +110,12 @@
         on:click={() => {
           localStorage.setItem("gameSetup", gameSetup);
           localStorage.setItem("doubleClick", doubleClick.toString());
+          localStorage.setItem("fontSize", fontSize.toString());
         }}
         on:keypress={() => {
           localStorage.setItem("gameSetup", gameSetup);
           localStorage.setItem("doubleClick", doubleClick.toString());
+          localStorage.setItem("fontSize", fontSize.toString());
         }}
       >
         Save

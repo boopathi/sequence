@@ -33,6 +33,8 @@
 
   let doubleClick = false;
 
+  let fontSize = 2;
+
   onMount(() => {
     let gs = localStorage.getItem("gameSetup") as GameSetup;
     if (gs) {
@@ -44,6 +46,13 @@
     let dc = localStorage.getItem("doubleClick");
     if (dc) {
       doubleClick = dc === "true";
+    }
+    let fs = localStorage.getItem("fontSize");
+    if (fs) {
+      fontSize = parseInt(fs, 10);
+      if (isNaN(fontSize)) {
+        fontSize = 3;
+      }
     }
   });
 
@@ -142,6 +151,7 @@
     <Board
       {game}
       {playTurn}
+      bind:fontSize
       bind:currentChip
       bind:isRemoving
       bind:doubleClick
@@ -182,6 +192,6 @@
   </footer>
 </div>
 
-<Options bind:gameSetup bind:doubleClick {reset} />
+<Options bind:gameSetup bind:doubleClick {reset} bind:fontSize />
 
 <About />
