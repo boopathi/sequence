@@ -97,7 +97,7 @@
 </div>
 
 <div
-  class="absolute w-full h-full grid place-content-center "
+  class="invisible sm:visible absolute w-full h-full grid place-content-center "
   class:text-lg={fontSize === 1}
   class:text-xl={fontSize === 2}
   class:text-2xl={fontSize === 3}

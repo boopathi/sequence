@@ -20,7 +20,7 @@
 </script>
 
 <div
-  class="grid m-2 p-1 rounded m-auto max-w-[1024px] min-w-[360px] gap-1 h-remaining-14 sm:h-remaining-10 select-none border bg-neutral"
+  class="grid my-2 mx-4 sm:mx-16 p-1 rounded m-auto max-w-[1024px] min-w-[360px] gap-1 h-remaining-14 sm:h-remaining-10 select-none border bg-neutral"
 >
   {#each boardConfig.rows as row, i}
     <div class="grid grid-cols-10 gap-1">
@@ -43,9 +43,10 @@
             lastLocation.loc[0] === i &&
             lastLocation.loc[1] === j}
           <div
-            class="relative grid gap-1 bg-base-100 border rounded content-end justify-center sm:place-content-center"
+            class="relative grid gap-1 ring-inset ring-info bg-base-100 border rounded content-end justify-center sm:place-content-center"
             class:cursor-pointer={!isRemoving || state === BoardState.EMPTY}
             class:cursor-no-drop={isRemoving}
+            class:ring-2={isFrozen}
             tabindex="0"
             role="button"
             aria-label={`${cardname(cell)}. row ${i + 1} column ${j + 1}`}
