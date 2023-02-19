@@ -39,7 +39,9 @@
       {suitSymbol}{num}
     </span>
   {:else}
-    <span class="text-error">{suitSymbol}{num}</span>
+    <span class="text-error" class:underline={num === "9"}>
+      {suitSymbol}{num}</span
+    >
   {/if}
 </div>
 <div
@@ -55,7 +57,9 @@
       {suitSymbol}{num}
     </span>
   {:else}
-    <span class="text-error">{suitSymbol}{num}</span>
+    <span class="text-error" class:underline={num === "9"}>
+      {suitSymbol}{num}
+    </span>
   {/if}
 </div>
 

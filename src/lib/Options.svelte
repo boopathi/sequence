@@ -10,21 +10,7 @@
   export let doubleClick: boolean;
   export let fontSize: number;
 
-  const themes = [
-    "light",
-    "dark",
-    "cupcake",
-    "synthwave",
-    "retro",
-    "cyberpunk",
-    "valentine",
-    "lofi",
-    "pastel",
-    "fantasy",
-    "wireframe",
-    "luxury",
-    "dracula",
-  ];
+  const themes = ["light", "dark", "synthwave", "fantasy", "dracula"];
 
   let theme = getTheme();
 

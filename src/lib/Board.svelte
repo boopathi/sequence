@@ -20,14 +20,14 @@
 </script>
 
 <div
-  class="grid p-2 m-auto max-w-[840px] min-w-[360px] gap-1 h-remaining-14 sm:h-remaining-10 select-none "
+  class="grid p-2 m-auto max-w-[1024px] min-w-[360px] gap-1 h-remaining-14 sm:h-remaining-10 select-none "
 >
   {#each boardConfig.rows as row, i}
     <div class="grid grid-cols-10 gap-1">
       {#each row as cell, j}
         {#if cell === Space.CORNER}
           <div
-            class="grid gap-1 bg-base-200 drop-shadow-sm rounded place-content-center"
+            class="grid gap-1 bg-base-100 border rounded place-content-center"
           >
             <Chip val={BoardState.CORNER} />
           </div>
@@ -38,13 +38,12 @@
             state !== BoardState.EMPTY ? "visible" : "hidden"}
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
           <div
-            class="relative grid gap-1 bg-base-200 drop-shadow-sm rounded content-end justify-center sm:place-content-center"
+            class="relative grid gap-1 bg-base-100 border rounded content-end justify-center sm:place-content-center"
             class:cursor-pointer={!isRemoving || state === BoardState.EMPTY}
             class:cursor-no-drop={isRemoving}
             class:scale-90={state !== BoardState.EMPTY || isFrozen}
             class:outline={isFrozen}
             class:outline-primary={isFrozen}
-            class:bg-base-300={state !== BoardState.EMPTY}
             class:group={state === BoardState.EMPTY}
             tabindex="0"
             role="button"

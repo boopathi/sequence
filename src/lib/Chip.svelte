@@ -11,13 +11,13 @@
   let chipColor = "black";
   $: switch (val) {
     case BoardState.RED_CHIP:
-      chipColor = "error";
+      chipColor = "accent";
       break;
     case BoardState.BLUE_CHIP:
-      chipColor = "info";
+      chipColor = "secondary";
       break;
     case BoardState.GREEN_CHIP:
-      chipColor = "success";
+      chipColor = "primary";
       break;
     case BoardState.CORNER:
       chipColor = "base-content";
