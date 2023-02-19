@@ -503,14 +503,13 @@ function numLocationOverlap(as: Location[], bs: Location[]) {
   return n;
 }
 
-export function getRowChunks(loc: Location) {
+export function getRowChunks([x, y]: Location) {
   const chunks: Location[][] = [];
   for (let i = 1; i <= 5; i++) {
-    if (loc[1] - 5 + i < 0) continue;
-    if (loc[1] + i > 10) continue;
+    if (y - 5 + i < 0) continue;
+    if (y + i > 10) continue;
     const chunk: Location[] = [];
     for (let j = -5 + i; j < 0 + i; j++) {
-      const [x, y] = loc;
       chunk.push([x, y + j]);
     }
     chunks.push(chunk);
@@ -518,14 +517,13 @@ export function getRowChunks(loc: Location) {
   return chunks;
 }
 
-export function getColumnChunks(loc: Location) {
+export function getColumnChunks([x, y]: Location) {
   const chunks: Location[][] = [];
   for (let i = 1; i <= 5; i++) {
-    if (loc[0] - 5 + i < 0) continue;
-    if (loc[0] + i > 10) continue;
+    if (x - 5 + i < 0) continue;
+    if (x + i > 10) continue;
     const chunk: Location[] = [];
     for (let j = -5 + i; j < 0 + i; j++) {
-      const [x, y] = loc;
       chunk.push([x + j, y]);
     }
     chunks.push(chunk);
@@ -533,16 +531,15 @@ export function getColumnChunks(loc: Location) {
   return chunks;
 }
 
-export function getDiagonal1Chunks(loc: Location) {
+export function getDiagonal1Chunks([x, y]: Location) {
   const chunks: Location[][] = [];
   for (let i = 1; i <= 5; i++) {
-    if (loc[0] - 5 + i < 0) continue;
-    if (loc[0] + i > 10) continue;
-    if (loc[1] - 5 + i < 0) continue;
-    if (loc[1] + i > 10) continue;
+    if (x - 5 + i < 0) continue;
+    if (x + i > 10) continue;
+    if (y - 5 + i < 0) continue;
+    if (y + i > 10) continue;
     const chunk: Location[] = [];
     for (let j = -5 + i; j < 0 + i; j++) {
-      const [x, y] = loc;
       chunk.push([x + j, y + j]);
     }
     chunks.push(chunk);
@@ -550,17 +547,16 @@ export function getDiagonal1Chunks(loc: Location) {
   return chunks;
 }
 
-export function getDiagonal2Chunks(loc: Location) {
+export function getDiagonal2Chunks([x, y]: Location) {
   const chunks: Location[][] = [];
   for (let i = 1; i <= 5; i++) {
-    if (loc[0] - 5 + i < 0) continue;
-    if (loc[0] + i > 10) continue;
-    if (loc[1] - 5 + i < 0) continue;
-    if (loc[1] + i > 10) continue;
+    if (x - 5 + i < 0) continue;
+    if (x + i > 10) continue;
+    if (y + 5 - i > 9) continue;
+    if (y - i < 0) continue;
     const chunk: Location[] = [];
     for (let j = -5 + i; j < 0 + i; j++) {
-      const [x, y] = loc;
-      chunk.push([x + j, y]);
+      chunk.push([x + j, y - j]);
     }
     chunks.push(chunk);
   }
