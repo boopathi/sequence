@@ -85,7 +85,7 @@
   };
   let reset = () => {
     try {
-      gameStore.reset();
+      gameStore.reset(gameSetup);
       isRemoving = false;
     } catch (e) {
       if (e instanceof Error) failure(e.message);
