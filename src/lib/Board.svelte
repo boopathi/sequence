@@ -20,7 +20,7 @@
 </script>
 
 <div
-  class="grid p-2 m-auto max-w-[1024px] min-w-[360px] gap-1 h-remaining-14 sm:h-remaining-10 select-none "
+  class="grid m-2 p-1 rounded m-auto max-w-[1024px] min-w-[360px] gap-1 h-remaining-14 sm:h-remaining-10 select-none border bg-neutral"
 >
   {#each boardConfig.rows as row, i}
     <div class="grid grid-cols-10 gap-1">
@@ -37,14 +37,15 @@
           {@const visibility =
             state !== BoardState.EMPTY ? "visible" : "hidden"}
           {@const chip = state === BoardState.EMPTY ? currentChip : state}
+          {@const lastLocation = game.history[game.history.length - 1]}
+          {@const isLastTurn =
+            lastLocation &&
+            lastLocation.loc[0] === i &&
+            lastLocation.loc[1] === j}
           <div
             class="relative grid gap-1 bg-base-100 border rounded content-end justify-center sm:place-content-center"
             class:cursor-pointer={!isRemoving || state === BoardState.EMPTY}
             class:cursor-no-drop={isRemoving}
-            class:scale-90={state !== BoardState.EMPTY || isFrozen}
-            class:outline={isFrozen}
-            class:outline-primary={isFrozen}
-            class:group={state === BoardState.EMPTY}
             tabindex="0"
             role="button"
             aria-label={`${cardname(cell)}. row ${i + 1} column ${j + 1}`}
@@ -64,7 +65,13 @@
             }}
           >
             <Card card={cell} class="" bind:fontSize>
-              <Chip val={chip} {visibility} />
+              <Chip
+                val={chip}
+                {visibility}
+                class={`${isFrozen ? "brightness-75 contrast-100" : ""} ${
+                  isLastTurn ? "animate-bounce" : ""
+                }`}
+              />
             </Card>
           </div>
         {/if}

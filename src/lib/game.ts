@@ -218,7 +218,7 @@ export class Game {
   }
 
   updateStatus() {
-    this.status = this.board.check(this.status);
+    this.status = this.board.check();
   }
 
   score() {
@@ -343,7 +343,7 @@ export class Board {
     this.rows[x][y] = BoardState.EMPTY;
   }
 
-  check(prevStatus: CheckResult = { completed: [] }): CheckResult {
+  check(): CheckResult {
     const chunks = this.chunk();
     const reducer = (p: BoardState, d: BoardState) =>
       this.canCount(p, d) ? d : BoardState.EMPTY;
@@ -492,4 +492,68 @@ function numLocationOverlap(as: Location[], bs: Location[]) {
     }
   }
   return n;
+}
+
+export function getRowChunks(loc: Location) {
+  const chunks: Location[][] = [];
+  for (let i = 1; i <= 5; i++) {
+    if (loc[1] - 5 + i < 0) continue;
+    if (loc[1] + i > 10) continue;
+    const chunk: Location[] = [];
+    for (let j = -5 + i; j < 0 + i; j++) {
+      const [x, y] = loc;
+      chunk.push([x, y + j]);
+    }
+    chunks.push(chunk);
+  }
+  return chunks;
+}
+
+export function getColumnChunks(loc: Location) {
+  const chunks: Location[][] = [];
+  for (let i = 1; i <= 5; i++) {
+    if (loc[0] - 5 + i < 0) continue;
+    if (loc[0] + i > 10) continue;
+    const chunk: Location[] = [];
+    for (let j = -5 + i; j < 0 + i; j++) {
+      const [x, y] = loc;
+      chunk.push([x + j, y]);
+    }
+    chunks.push(chunk);
+  }
+  return chunks;
+}
+
+export function getDiagonal1Chunks(loc: Location) {
+  const chunks: Location[][] = [];
+  for (let i = 1; i <= 5; i++) {
+    if (loc[0] - 5 + i < 0) continue;
+    if (loc[0] + i > 10) continue;
+    if (loc[1] - 5 + i < 0) continue;
+    if (loc[1] + i > 10) continue;
+    const chunk: Location[] = [];
+    for (let j = -5 + i; j < 0 + i; j++) {
+      const [x, y] = loc;
+      chunk.push([x + j, y + j]);
+    }
+    chunks.push(chunk);
+  }
+  return chunks;
+}
+
+export function getDiagonal2Chunks(loc: Location) {
+  const chunks: Location[][] = [];
+  for (let i = 1; i <= 5; i++) {
+    if (loc[0] - 5 + i < 0) continue;
+    if (loc[0] + i > 10) continue;
+    if (loc[1] - 5 + i < 0) continue;
+    if (loc[1] + i > 10) continue;
+    const chunk: Location[] = [];
+    for (let j = -5 + i; j < 0 + i; j++) {
+      const [x, y] = loc;
+      chunk.push([x + j, y]);
+    }
+    chunks.push(chunk);
+  }
+  return chunks;
 }

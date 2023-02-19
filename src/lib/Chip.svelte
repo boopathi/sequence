@@ -26,12 +26,10 @@
 </script>
 
 <svg
-  class={`fill-${chipColor} ${klass}`}
+  class={`${klass} w-[24px] h-[24px] sm:w-[32px] sm:h-[32px] bg-base-100 rounded-full drop-shadow brightness-75 drop-shadow contrast-200 fill-${chipColor}`}
   class:opacity-0={visibility === "hidden"}
   class:opacity-80={visibility === "partial"}
   class:opacity-100={visibility === "visible"}
-  height="24px"
-  width="24px"
   version="1.1"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
