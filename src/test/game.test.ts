@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Board, BoardState, CompletionPath } from "$lib/game";
+import { Board, BoardState, CompletionPath, Game } from "$lib/game";
 import { boardConfig } from "$lib/board-config";
 import chalk from "chalk";
 
@@ -8,7 +8,7 @@ const suits = ["S", "C", "D", "H"];
 // prettier-ignore
 const nums = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Q", "K", "A"];
 
-describe("game", () => {
+describe("board", () => {
   test("place on an empty space", () => {
     const b = new Board();
     b.place([0, 1], BoardState.BLUE_CHIP);
@@ -47,6 +47,26 @@ describe("game", () => {
     ).toThrowErrorMatchingInlineSnapshot(
       '"ERR_CORNER_CHIP: Cannot play CORNER location"',
     );
+  });
+});
+
+describe("game", () => {
+  test("regression: 3 player remove and undo", () => {
+    const game = new Game("1vs1vs1");
+    game.playTurn([1, 1]);
+    game.playTurn([1, 2]);
+    game.playTurn([1, 3]);
+    game.playTurn([2, 1]);
+    game.playTurn([2, 2]);
+    game.playTurn([2, 3]);
+    game.playTurn([3, 1]);
+    game.playTurn([3, 2]);
+    game.playTurn([3, 3]);
+    const prevRows = structuredClone(game.board.rows);
+    game.remove([3, 3]);
+    game.undo();
+    const newRows = structuredClone(game.board.rows);
+    expect(newRows).toEqual(prevRows);
   });
 });
 

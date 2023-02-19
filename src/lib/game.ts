@@ -38,6 +38,7 @@ export interface HistoryItem {
   type: "add" | "remove";
   loc: Location;
   chip: BoardState;
+  chipAtLoc: BoardState;
 }
 
 export interface Completion {
@@ -134,7 +135,7 @@ export class Game {
     const chip = this.currentChip();
 
     this.board.place(loc, chip);
-    this.history.push({ type: "add", loc, chip });
+    this.history.push({ type: "add", loc, chip, chipAtLoc: BoardState.EMPTY });
     this.updateStatus();
 
     if (this.currentPlayer >= this.numPlayers - 1) {
@@ -160,7 +161,7 @@ export class Game {
       throw new Error("ERR_FROZEN_CHIP: Cannot remove from completed sequence");
     }
     this.board.remove(loc);
-    this.history.push({ type: "remove", loc, chip });
+    this.history.push({ type: "remove", loc, chip, chipAtLoc: cur });
     this.updateStatus();
     if (this.currentPlayer >= this.numPlayers - 1) {
       this.currentPlayer = 0;
@@ -178,8 +179,8 @@ export class Game {
     if (lastMove) {
       if (lastMove.type === "add") {
         this.board.remove(lastMove.loc);
-      } else {
-        this.board.place(lastMove.loc, this.currentChip());
+      } else if (lastMove.type === "remove") {
+        this.board.place(lastMove.loc, lastMove.chipAtLoc);
       }
     }
     this.updateStatus();
