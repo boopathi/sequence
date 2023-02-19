@@ -69,7 +69,7 @@
                 val={chip}
                 {visibility}
                 class={`${isFrozen ? "brightness-75 contrast-100" : ""} ${
-                  isLastTurn ? "animate-bounce" : ""
+                  isLastTurn ? "animate-wiggle" : ""
                 }`}
               />
             </Card>
