@@ -54,17 +54,6 @@
         fontSize = 3;
       }
     }
-    playTurn([2, 2]);
-    playTurn([2, 3]);
-    playTurn([3, 3]);
-    playTurn([3, 4]);
-    playTurn([4, 4]);
-    playTurn([4, 5]);
-    playTurn([5, 5]);
-    playTurn([5, 6]);
-    playTurn([6, 6]);
-    playTurn([4, 1]);
-    playTurn([4, 2]);
   });
 
   let playTurn = (loc: Location) => {
