@@ -3,14 +3,26 @@
   import Modal from "./Modal.svelte";
   import Setting from "./Setting.svelte";
   import { themeChange } from "theme-change";
-  import { possibleGames, type GameSetup } from "./game";
+  import { Game, possibleGames, type GameSetup } from "./game";
+  import Chip from "./Chip.svelte";
 
   export let gameSetup: GameSetup;
   export let reset: () => void;
   export let doubleClick: boolean;
   export let fontSize: number;
+  export let game: Game;
+  export let chipColors: string[];
 
   const themes = ["light", "dark", "synthwave", "fantasy", "dracula"];
+
+  const possibleChipColors = [
+    "primary",
+    "secondary",
+    "accent",
+    "info",
+    "success",
+    "warning",
+  ];
 
   let theme = getTheme();
 
@@ -20,6 +32,15 @@
           document.documentElement.dataset.theme ||
           "dracula"
       : "dracula";
+  }
+
+  function updateChipColor(i: number, color: string) {
+    const existing = chipColors.indexOf(color);
+    if (existing !== -1) {
+      // swap
+      chipColors[existing] = chipColors[i];
+    }
+    chipColors[i] = color;
   }
 
   $: theme,
@@ -72,6 +93,30 @@
       </select>
     </Setting>
 
+    {#each Array(3) as _, i}
+      <Setting name={`Player ${i + 1} chip`}>
+        <div class="flex gap-2">
+          {#each possibleChipColors as color}
+            <button
+              class="flex gap-1 ring-success ring-offset-2"
+              class:ring={chipColors[i] === color}
+              on:click={() => {
+                updateChipColor(i, color);
+              }}
+              on:keypress={() => {
+                updateChipColor(i, color);
+              }}
+            >
+              <Chip
+                val={game.chipFor(i, 3)}
+                chipColors={[color, color, color]}
+              />
+            </button>
+          {/each}
+        </div>
+      </Setting>
+    {/each}
+
     <Setting name="Reset board">
       <button class="btn btn-sm" on:click={reset}>RESET</button>
     </Setting>
@@ -97,11 +142,13 @@
           localStorage.setItem("gameSetup", gameSetup);
           localStorage.setItem("doubleClick", doubleClick.toString());
           localStorage.setItem("fontSize", fontSize.toString());
+          localStorage.setItem("chipColors", JSON.stringify(chipColors));
         }}
         on:keypress={() => {
           localStorage.setItem("gameSetup", gameSetup);
           localStorage.setItem("doubleClick", doubleClick.toString());
           localStorage.setItem("fontSize", fontSize.toString());
+          localStorage.setItem("chipColors", JSON.stringify(chipColors));
         }}
       >
         Save

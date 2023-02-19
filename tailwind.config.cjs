@@ -27,6 +27,7 @@ module.exports = {
   safelist: [
     "fill-error",
     "fill-success",
+    "fill-warning",
     "fill-info",
     "fill-base-content",
     "fill-primary",

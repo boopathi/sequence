@@ -6,6 +6,7 @@
   export { klass as class };
 
   export let fontSize: number;
+  export let isFrozen = false;
 
   let [suit, ...rest] = Card[card];
   let suitSymbol: string;
@@ -39,7 +40,7 @@
       {suitSymbol}
     </span>
   {:else}
-    <span class="text-error"> {suitSymbol}</span>
+    <span class="text-error">{suitSymbol}</span>
   {/if}
 </div>
 <div

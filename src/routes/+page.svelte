@@ -32,8 +32,8 @@
   };
 
   let doubleClick = false;
-
   let fontSize = 2;
+  let chipColors = ["accent", "primary", "secondary"];
 
   onMount(() => {
     let gs = localStorage.getItem("gameSetup") as GameSetup;
@@ -53,6 +53,10 @@
       if (isNaN(fontSize)) {
         fontSize = 3;
       }
+    }
+    let cc = localStorage.getItem("chipColors");
+    if (cc) {
+      chipColors = JSON.parse(cc);
     }
   });
 
@@ -154,7 +158,11 @@
           }`}
         >
           <span class="indicator-item badge badge-primary">{s.score}</span>
-          <Chip val={s.team} class={`${isCurrent ? "animate-spin" : ""}`} />
+          <Chip
+            val={s.team}
+            class={`${isCurrent ? "animate-spin" : ""}`}
+            bind:chipColors
+          />
         </div>
       {/each}
     </div>
@@ -168,6 +176,7 @@
       bind:currentChip
       bind:isRemoving
       bind:doubleClick
+      bind:chipColors
     />
   </main>
 
@@ -199,16 +208,23 @@
       </button>
 
       <label for="about-modal" class="uppercase" role="menuitem" tabindex="0">
-        About</label
-      >
+        About
+      </label>
 
       <label for="options-modal" class="uppercase" role="menuitem" tabindex="0">
-        Options</label
-      >
+        Options
+      </label>
     </div>
   </footer>
 </div>
 
-<Options bind:gameSetup bind:doubleClick {reset} bind:fontSize />
+<Options
+  bind:gameSetup
+  bind:doubleClick
+  {reset}
+  bind:fontSize
+  bind:game
+  bind:chipColors
+/>
 
 <About />

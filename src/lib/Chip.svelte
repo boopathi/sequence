@@ -6,6 +6,8 @@
   export let isLastTurn = false;
   export let isFrozen = false;
 
+  export let chipColors = ["accent", "secondary", "primary"];
+
   let klass: string = "";
 
   export { klass as class };
@@ -13,13 +15,13 @@
   let chipColor = "black";
   $: switch (val) {
     case BoardState.RED_CHIP:
-      chipColor = "accent";
+      chipColor = chipColors[0];
       break;
     case BoardState.BLUE_CHIP:
-      chipColor = "secondary";
+      chipColor = chipColors[1];
       break;
     case BoardState.GREEN_CHIP:
-      chipColor = "primary";
+      chipColor = chipColors[2];
       break;
     case BoardState.CORNER:
       chipColor = "base-content";
@@ -28,11 +30,9 @@
 </script>
 
 <svg
-  class={`${klass} w-[24px] h-[24px] sm:w-[32px] sm:h-[32px] bg-base-100 rounded-full drop-shadow fill-${chipColor}`}
+  class={`${klass} w-[24px] h-[24px] sm:w-[32px] sm:h-[32px] bg-base-100 rounded-full drop-shadow-md fill-${chipColor}`}
   class:opacity-0={visibility === "hidden"}
-  class:opacity-80={visibility === "partial"}
   class:opacity-100={visibility === "visible"}
-  class:brightness-75={isFrozen}
   class:animate-slowb={isLastTurn}
   version="1.1"
   xmlns="http://www.w3.org/2000/svg"

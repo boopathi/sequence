@@ -217,6 +217,13 @@ export class Game {
     return ret;
   }
 
+  getFrozenPath(loc: Location) {
+    const ret = this.status.completed.find((c) => {
+      return c.locs.some((l) => l[0] === loc[0] && l[1] === loc[1]);
+    });
+    return ret?.path;
+  }
+
   updateStatus() {
     this.status = this.board.check();
   }
@@ -252,17 +259,19 @@ export class Game {
   }
 
   currentChip() {
-    switch (this.numTeams) {
+    return this.chipFor(this.currentPlayer % this.numTeams);
+  }
+
+  chipFor(teamNum: number, numTeams = this.numTeams) {
+    switch (numTeams) {
       case 2:
-        return [BoardState.RED_CHIP, BoardState.BLUE_CHIP][
-          this.currentPlayer % 2
-        ];
+        return [BoardState.RED_CHIP, BoardState.BLUE_CHIP][teamNum];
       case 3:
         return [
           BoardState.RED_CHIP,
           BoardState.BLUE_CHIP,
           BoardState.GREEN_CHIP,
-        ][this.currentPlayer % 3];
+        ][teamNum];
     }
     throw new Error(`ERR_INVALID_NUM_TEAMS`);
   }
