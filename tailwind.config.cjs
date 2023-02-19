@@ -8,13 +8,19 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
-        wiggle: {
-          "0%, 100%": { transform: "rotate(-15deg)" },
-          "50%": { transform: "rotate(15deg)" },
+        slowb: {
+          "0%, 100%": {
+            transform: "translateY(-10%)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "50%": {
+            transform: "translateY(0)",
+            animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
+          },
         },
       },
       animation: {
-        wiggle: "wiggle 1s ease-in-out infinite",
+        slowb: "slowb 600ms infinite",
       },
     },
   },

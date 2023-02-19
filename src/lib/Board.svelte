@@ -65,13 +65,7 @@
             }}
           >
             <Card card={cell} class="" bind:fontSize>
-              <Chip
-                val={chip}
-                {visibility}
-                class={`${isFrozen ? "brightness-75 contrast-100" : ""} ${
-                  isLastTurn ? "animate-wiggle" : ""
-                }`}
-              />
+              <Chip val={chip} {visibility} {isFrozen} {isLastTurn} />
             </Card>
           </div>
         {/if}
