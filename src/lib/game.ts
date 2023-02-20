@@ -438,6 +438,30 @@ export class Board {
     return status;
   }
 
+  getCompletion(chunks: Location[][]) {
+    const completed = chunks.map((chunk) => {
+      const winner = chunk
+        .map((loc) => this.get(loc))
+        .reduce((acc, cur) => {
+          if (acc === BoardState.EMPTY || cur === BoardState.EMPTY)
+            return BoardState.EMPTY;
+          if (acc === BoardState.CORNER || cur === BoardState.CORNER)
+            return cur;
+          return acc === cur ? cur : BoardState.EMPTY;
+        });
+      if (winner === BoardState.EMPTY) return;
+      return winner;
+    });
+    return completed;
+  }
+
+  check2(loc: Location) {
+    const rowChunks = getRowChunks(loc);
+    const colChunks = getColChunks(loc);
+    const diag0Chunks = getDiag0Chunks(loc);
+    const diag1Chunks = getDiag1Chunks(loc);
+  }
+
   private canCount(a: BoardState, b: BoardState) {
     if (a === BoardState.EMPTY || b === BoardState.EMPTY) return false;
     if (a === BoardState.CORNER || b === BoardState.CORNER) return true;
@@ -504,62 +528,66 @@ function numLocationOverlap(as: Location[], bs: Location[]) {
   return n;
 }
 
+function getChunks([x, y]: Location, kind: CompletionPath) {
+  const chunks: Location[][] = [];
+  for (let i = 0; i < 5; i++) {
+    let minX = x - 4 + i;
+    let maxX = x + i;
+    let minY = y - 4 + i;
+    let maxY = y + i;
+
+    if (kind === CompletionPath.ROW) {
+      if (minY < 0 || maxY > 9) continue;
+    } else if (kind === CompletionPath.COL) {
+      if (minX < 0 || maxX > 9) continue;
+    } else if (kind === CompletionPath.DIAG_0) {
+      if (minX < 0 || maxX > 9 || minY < 0 || maxY > 9) continue;
+    } else if (kind === CompletionPath.DIAG_1) {
+      minY = y + 4 - i;
+      maxY = y - i;
+      if (minX < 0 || maxX > 9 || minY < 0 || minY > 9 || maxY < 0 || maxY > 9)
+        continue;
+    }
+
+    const chunk: Location[] = [];
+
+    switch (kind) {
+      case CompletionPath.ROW:
+        for (let j = minY; j <= maxY; j++) {
+          chunk.push([x, j]);
+        }
+        break;
+      case CompletionPath.COL:
+        for (let j = minX; j <= maxX; j++) {
+          chunk.push([j, y]);
+        }
+        break;
+      case CompletionPath.DIAG_0:
+        for (let j = minX, k = minY; j <= maxX && k <= maxY; j++, k++) {
+          chunk.push([j, k]);
+        }
+        break;
+      case CompletionPath.DIAG_1:
+        for (let j = minX, k = minY; j <= maxX && k >= maxY; j++, k--) {
+          chunk.push([j, k]);
+        }
+        break;
+    }
+
+    chunks.push(chunk);
+  }
+  return chunks;
+}
+
 export function getRowChunks([x, y]: Location) {
-  const chunks: Location[][] = [];
-  for (let i = 1; i <= 5; i++) {
-    if (y - 5 + i < 0) continue;
-    if (y + i > 10) continue;
-    const chunk: Location[] = [];
-    for (let j = -5 + i; j < 0 + i; j++) {
-      chunk.push([x, y + j]);
-    }
-    chunks.push(chunk);
-  }
-  return chunks;
+  return getChunks([x, y], CompletionPath.ROW);
 }
-
-export function getColumnChunks([x, y]: Location) {
-  const chunks: Location[][] = [];
-  for (let i = 1; i <= 5; i++) {
-    if (x - 5 + i < 0) continue;
-    if (x + i > 10) continue;
-    const chunk: Location[] = [];
-    for (let j = -5 + i; j < 0 + i; j++) {
-      chunk.push([x + j, y]);
-    }
-    chunks.push(chunk);
-  }
-  return chunks;
+export function getColChunks([x, y]: Location) {
+  return getChunks([x, y], CompletionPath.COL);
 }
-
-export function getDiagonal1Chunks([x, y]: Location) {
-  const chunks: Location[][] = [];
-  for (let i = 1; i <= 5; i++) {
-    if (x - 5 + i < 0) continue;
-    if (x + i > 10) continue;
-    if (y - 5 + i < 0) continue;
-    if (y + i > 10) continue;
-    const chunk: Location[] = [];
-    for (let j = -5 + i; j < 0 + i; j++) {
-      chunk.push([x + j, y + j]);
-    }
-    chunks.push(chunk);
-  }
-  return chunks;
+export function getDiag0Chunks([x, y]: Location) {
+  return getChunks([x, y], CompletionPath.DIAG_0);
 }
-
-export function getDiagonal2Chunks([x, y]: Location) {
-  const chunks: Location[][] = [];
-  for (let i = 1; i <= 5; i++) {
-    if (x - 5 + i < 0) continue;
-    if (x + i > 10) continue;
-    if (y + 5 - i > 9) continue;
-    if (y - i < 0) continue;
-    const chunk: Location[] = [];
-    for (let j = -5 + i; j < 0 + i; j++) {
-      chunk.push([x + j, y - j]);
-    }
-    chunks.push(chunk);
-  }
-  return chunks;
+export function getDiag1Chunks([x, y]: Location) {
+  return getChunks([x, y], CompletionPath.DIAG_1);
 }
