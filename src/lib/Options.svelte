@@ -30,8 +30,8 @@
     return typeof document !== "undefined"
       ? localStorage.getItem("theme") ||
           document.documentElement.dataset.theme ||
-          "dracula"
-      : "dracula";
+          "light"
+      : "light";
   }
 
   function updateChipColor(i: number, color: string) {

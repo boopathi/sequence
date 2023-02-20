@@ -14,6 +14,8 @@
   import { onMount } from "svelte";
   import About from "$lib/About.svelte";
   import Options from "$lib/Options.svelte";
+  import Modal from "$lib/Modal.svelte";
+  import Setting from "$lib/Setting.svelte";
 
   let gameSetup: GameSetup = "1vs1";
 
@@ -34,6 +36,13 @@
   let doubleClick = false;
   let fontSize = 2;
   let chipColors = ["accent", "primary", "secondary"];
+
+  let isDone: BoardState | false = false;
+  let winner: BoardState;
+  let isDoneModal: any;
+  $: game,
+    (isDone = game.isDone()),
+    isDone && (winner = isDone) && isDoneModal.click();
 
   onMount(() => {
     let gs = localStorage.getItem("gameSetup") as GameSetup;
@@ -228,3 +237,38 @@
 />
 
 <About />
+
+<label for="game-over-modal" class="invisible" bind:this={isDoneModal} />
+<Modal title="Game over" modalName="game-over-modal" closable={false}>
+  <div class="form-control grid grid-flow-row gap-4">
+    <h2 class="text-2xl font-bold flex gap-2 place-content-center">
+      <Chip val={winner} bind:chipColors /> wins!
+    </h2>
+    <div class="flex justify-center gap-2">
+      {#each score as s, i}
+        <div class="flex flex-col items-center">
+          <Chip val={s.team} bind:chipColors />
+          <span class="text-2xl font-bold">{s.score}</span>
+        </div>
+      {/each}
+    </div>
+    <Setting name="Wrong move??">
+      <button
+        class="btn btn-sm"
+        on:click={() => {
+          undo();
+          isDoneModal.click();
+        }}>UNDO</button
+      >
+    </Setting>
+    <Setting name="Start a new Game">
+      <button
+        class="btn btn-sm"
+        on:click={() => {
+          reset();
+          isDoneModal.click();
+        }}>Restart</button
+      >
+    </Setting>
+  </div>
+</Modal>

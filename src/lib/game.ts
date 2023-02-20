@@ -177,7 +177,7 @@ export class Game {
       } else if (lastMove.type === "remove") {
         this.board.place(lastMove.loc, lastMove.chipAtLoc);
       }
-      this.updateStatus(lastMove.loc);
+      this.updateStatus(lastMove.loc, true);
       if (this.currentPlayer <= 0) {
         this.currentPlayer = this.numPlayers - 1;
       } else {
@@ -190,7 +190,7 @@ export class Game {
     const score = this.score();
     for (const s of score) {
       if (s.score >= this.numSequences) {
-        return true;
+        return s.team;
       }
     }
     return false;
@@ -220,7 +220,13 @@ export class Game {
     return ret?.path;
   }
 
-  updateStatus(loc: Location) {
+  updateStatus(loc: Location, isUndo = false) {
+    if (isUndo) {
+      // remove the sets that use the location loc
+      this.status.completed = this.status.completed.filter((c) => {
+        return !c.locs.some((l) => l[0] === loc[0] && l[1] === loc[1]);
+      });
+    }
     this.status = this.board.check2(loc, this.status);
   }
 
