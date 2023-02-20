@@ -16,13 +16,6 @@ export enum BoardState {
   EMPTY,
 }
 
-interface Chunk {
-  x: number;
-  y: number;
-  c: BoardState[][];
-  formatted: string[][];
-}
-
 export interface CheckResult {
   completed: Completion[];
 }
@@ -362,7 +355,7 @@ export class Board {
     // prefer corners
     chunks.sort((a, b) => {
       if (a.some((loc) => this.get(loc) === BoardState.CORNER)) return -1;
-      if (b.some((loc) => this.get(loc) === BoardState.CORNER)) return -1;
+      if (b.some((loc) => this.get(loc) === BoardState.CORNER)) return 1;
       return 0;
     });
     for (const chunk of chunks) {
