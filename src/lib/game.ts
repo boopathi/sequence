@@ -359,14 +359,20 @@ export class Board {
     chunks: Location[][],
     path: CompletionPath,
   ): Completion | undefined {
+    // prefer corners
+    chunks.sort((a, b) => {
+      if (a.some((loc) => this.get(loc) === BoardState.CORNER)) return -1;
+      if (b.some((loc) => this.get(loc) === BoardState.CORNER)) return -1;
+      return 0;
+    });
     for (const chunk of chunks) {
       const winner = chunk
         .map((loc) => this.get(loc))
         .reduce((acc, cur) => {
           if (acc === BoardState.EMPTY || cur === BoardState.EMPTY)
             return BoardState.EMPTY;
-          if (acc === BoardState.CORNER || cur === BoardState.CORNER)
-            return cur;
+          if (acc === BoardState.CORNER) return cur;
+          if (cur === BoardState.CORNER) return acc;
           return acc === cur ? cur : BoardState.EMPTY;
         });
       if (winner !== BoardState.EMPTY) {

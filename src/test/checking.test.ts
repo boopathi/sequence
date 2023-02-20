@@ -103,4 +103,58 @@ describe("checking", () => {
       },
     ]);
   });
+
+  test("prefer corner - full row", () => {
+    const board = new Board();
+
+    board.place([0, 1], BoardState.GREEN_CHIP);
+    board.place([0, 2], BoardState.GREEN_CHIP);
+    board.place([0, 3], BoardState.GREEN_CHIP);
+    board.place([0, 4], BoardState.GREEN_CHIP);
+    const result = board.check2([0, 4]);
+    expect(result.completed).toStrictEqual([
+      {
+        state: BoardState.GREEN_CHIP,
+        path: CompletionPath.ROW,
+        locs: [
+          [0, 0],
+          [0, 1],
+          [0, 2],
+          [0, 3],
+          [0, 4],
+        ],
+      },
+    ]);
+
+    board.place([0, 5], BoardState.GREEN_CHIP);
+    board.place([0, 6], BoardState.GREEN_CHIP);
+    board.place([0, 7], BoardState.GREEN_CHIP);
+    board.place([0, 8], BoardState.GREEN_CHIP);
+
+    const result2 = board.check2([0, 8], result);
+    expect(result2.completed).toStrictEqual([
+      {
+        state: BoardState.GREEN_CHIP,
+        path: CompletionPath.ROW,
+        locs: [
+          [0, 0],
+          [0, 1],
+          [0, 2],
+          [0, 3],
+          [0, 4],
+        ],
+      },
+      {
+        state: BoardState.GREEN_CHIP,
+        path: CompletionPath.ROW,
+        locs: [
+          [0, 5],
+          [0, 6],
+          [0, 7],
+          [0, 8],
+          [0, 9],
+        ],
+      },
+    ]);
+  });
 });
