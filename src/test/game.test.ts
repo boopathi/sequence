@@ -77,7 +77,7 @@ describe("chunking", () => {
     board.place([2, 2], BoardState.RED_CHIP);
     board.place([3, 3], BoardState.RED_CHIP);
     board.place([4, 4], BoardState.RED_CHIP);
-    expect(board.check().completed[0]).toMatchObject({
+    expect(board.check2([4, 4]).completed[0]).toMatchObject({
       state: BoardState.RED_CHIP,
       path: CompletionPath.DIAG_0,
       locs: [
@@ -97,7 +97,7 @@ describe("chunking", () => {
     board.place([5, 3], BoardState.RED_CHIP);
     board.place([6, 4], BoardState.RED_CHIP);
     board.place([7, 5], BoardState.RED_CHIP);
-    expect(board.check().completed[0]).toMatchObject({
+    expect(board.check2([6, 4]).completed[0]).toMatchObject({
       state: BoardState.RED_CHIP,
       path: CompletionPath.DIAG_0,
       locs: [
@@ -116,7 +116,7 @@ describe("chunking", () => {
     board.place([2, 7], BoardState.BLUE_CHIP);
     board.place([3, 6], BoardState.BLUE_CHIP);
     board.place([4, 5], BoardState.BLUE_CHIP);
-    const status = board.check();
+    const status = board.check2([1, 8]);
     expect(status.completed[0]).toMatchObject({
       state: BoardState.BLUE_CHIP,
       path: CompletionPath.DIAG_1,
@@ -137,7 +137,7 @@ describe("chunking", () => {
     board.place([2, 5], BoardState.BLUE_CHIP);
     board.place([3, 4], BoardState.BLUE_CHIP);
     board.place([4, 3], BoardState.BLUE_CHIP);
-    const status = board.check();
+    const status = board.check2([2, 5]);
     expect(status.completed[0]).toMatchObject({
       state: BoardState.BLUE_CHIP,
       path: CompletionPath.DIAG_1,
@@ -157,7 +157,7 @@ describe("chunking", () => {
     board.place([0, 2], BoardState.GREEN_CHIP);
     board.place([0, 3], BoardState.GREEN_CHIP);
     board.place([0, 4], BoardState.GREEN_CHIP);
-    const status = board.check();
+    const status = board.check2([0, 1]);
     expect(status.completed[0]).toMatchObject({
       state: BoardState.GREEN_CHIP,
       path: CompletionPath.ROW,
@@ -178,7 +178,7 @@ describe("chunking", () => {
     board.place([4, 7], BoardState.GREEN_CHIP);
     board.place([4, 8], BoardState.GREEN_CHIP);
     board.place([4, 9], BoardState.GREEN_CHIP);
-    const status = board.check();
+    const status = board.check2([4, 6]);
     expect(status.completed[0]).toMatchObject({
       state: BoardState.GREEN_CHIP,
       path: CompletionPath.ROW,
@@ -198,7 +198,7 @@ describe("chunking", () => {
     board.place([2, 0], BoardState.GREEN_CHIP);
     board.place([3, 0], BoardState.GREEN_CHIP);
     board.place([4, 0], BoardState.GREEN_CHIP);
-    const status = board.check();
+    const status = board.check2([4, 0]);
     expect(status.completed[0]).toMatchObject({
       state: BoardState.GREEN_CHIP,
       path: CompletionPath.COL,
@@ -219,7 +219,7 @@ describe("chunking", () => {
     board.place([7, 4], BoardState.GREEN_CHIP);
     board.place([8, 4], BoardState.GREEN_CHIP);
     board.place([9, 4], BoardState.GREEN_CHIP);
-    const status = board.check();
+    const status = board.check2([9, 4]);
     expect(status.completed[0]).toMatchObject({
       state: BoardState.GREEN_CHIP,
       path: CompletionPath.COL,
@@ -243,7 +243,7 @@ describe("check completion overlaps", () => {
     board.place([7, 4], BoardState.GREEN_CHIP);
     board.place([8, 4], BoardState.GREEN_CHIP);
     board.place([9, 4], BoardState.GREEN_CHIP);
-    const status = board.check();
+    const status = board.check2([6, 4]);
     expect(status.completed.length).toBe(1);
   });
 });
