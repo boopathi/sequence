@@ -102,6 +102,13 @@ describe("chunking", () => {
     test("9,1", () => {
       expect(printChunks(getDiag0Chunks([9, 1]))).toMatchInlineSnapshot('""');
     });
+
+    test("6,2", () => {
+      expect(printChunks(getDiag0Chunks([6, 2]))).toMatchInlineSnapshot(`
+        "4,0 5,1 6,2 7,3 8,4
+        5,1 6,2 7,3 8,4 9,5"
+      `);
+    });
   });
 
   describe("diagonal 1", () => {
@@ -157,6 +164,14 @@ describe("chunking", () => {
       expect(printChunks(getDiag1Chunks([5, 9]))).toMatchInlineSnapshot(
         '"5,9 6,8 7,7 8,6 9,5"',
       );
+    });
+
+    test("6,2", () => {
+      expect(printChunks(getDiag1Chunks([6, 2]))).toMatchInlineSnapshot(`
+        "2,6 3,5 4,4 5,3 6,2
+        3,5 4,4 5,3 6,2 7,1
+        4,4 5,3 6,2 7,1 8,0"
+      `);
     });
   });
 });
