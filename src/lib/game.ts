@@ -117,7 +117,9 @@ export class Game {
   numTeams: number;
   numSequences = 2;
 
-  status = this.board.check();
+  status: CheckResult = {
+    completed: [],
+  };
 
   currentPlayer = 0;
 
@@ -136,7 +138,7 @@ export class Game {
 
     this.board.place(loc, chip);
     this.history.push({ type: "add", loc, chip, chipAtLoc: BoardState.EMPTY });
-    this.updateStatus();
+    this.updateStatus(loc);
 
     if (this.currentPlayer >= this.numPlayers - 1) {
       this.currentPlayer = 0;
@@ -162,7 +164,7 @@ export class Game {
     }
     this.board.remove(loc);
     this.history.push({ type: "remove", loc, chip, chipAtLoc: cur });
-    this.updateStatus();
+    this.updateStatus(loc);
     if (this.currentPlayer >= this.numPlayers - 1) {
       this.currentPlayer = 0;
     } else {
@@ -182,12 +184,12 @@ export class Game {
       } else if (lastMove.type === "remove") {
         this.board.place(lastMove.loc, lastMove.chipAtLoc);
       }
-    }
-    this.updateStatus();
-    if (this.currentPlayer <= 0) {
-      this.currentPlayer = this.numPlayers - 1;
-    } else {
-      this.currentPlayer--;
+      this.updateStatus(lastMove.loc);
+      if (this.currentPlayer <= 0) {
+        this.currentPlayer = this.numPlayers - 1;
+      } else {
+        this.currentPlayer--;
+      }
     }
   }
 
@@ -225,8 +227,8 @@ export class Game {
     return ret?.path;
   }
 
-  updateStatus() {
-    this.status = this.board.check();
+  updateStatus(loc: Location) {
+    this.status = this.board.check2(loc, this.status);
   }
 
   score() {
@@ -438,8 +440,11 @@ export class Board {
     return status;
   }
 
-  getCompletion(chunks: Location[][]) {
-    const completed = chunks.map((chunk) => {
+  getCompletion(
+    chunks: Location[][],
+    path: CompletionPath,
+  ): Completion | undefined {
+    for (const chunk of chunks) {
       const winner = chunk
         .map((loc) => this.get(loc))
         .reduce((acc, cur) => {
@@ -449,17 +454,59 @@ export class Board {
             return cur;
           return acc === cur ? cur : BoardState.EMPTY;
         });
-      if (winner === BoardState.EMPTY) return;
-      return winner;
-    });
-    return completed;
+      if (winner !== BoardState.EMPTY) {
+        return {
+          state: winner,
+          locs: chunk,
+          path,
+        };
+      }
+    }
+    return;
   }
 
-  check2(loc: Location) {
+  check2(loc: Location, previousResult: CheckResult = { completed: [] }) {
     const rowChunks = getRowChunks(loc);
     const colChunks = getColChunks(loc);
     const diag0Chunks = getDiag0Chunks(loc);
     const diag1Chunks = getDiag1Chunks(loc);
+
+    const rowCompletion = this.getCompletion(rowChunks, CompletionPath.ROW);
+    const colCompletion = this.getCompletion(colChunks, CompletionPath.COL);
+    const diag0Completion = this.getCompletion(
+      diag0Chunks,
+      CompletionPath.DIAG_0,
+    );
+    const diag1Completion = this.getCompletion(
+      diag1Chunks,
+      CompletionPath.DIAG_1,
+    );
+
+    const result = previousResult;
+
+    const frozen = structuredClone(
+      previousResult.completed.map((c) => c.locs).flat(1),
+    );
+
+    for (const completion of [
+      rowCompletion,
+      colCompletion,
+      diag0Completion,
+      diag1Completion,
+    ]) {
+      if (completion) {
+        const numFrozen = completion.locs.filter((loc) =>
+          frozen.some(
+            (frozenLoc) => loc[0] === frozenLoc[0] && loc[1] === frozenLoc[1],
+          ),
+        ).length;
+        if (numFrozen < 2) {
+          result.completed.push(completion);
+        }
+      }
+    }
+
+    return result;
   }
 
   private canCount(a: BoardState, b: BoardState) {
