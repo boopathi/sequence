@@ -11,7 +11,8 @@
     "lint": "prettier --plugin-search-dir . --check .",
     "format": "prettier --plugin-search-dir . --write .",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "cypress:open": "cypress open"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
@@ -19,6 +20,7 @@
     "@vite-pwa/sveltekit": "^0.1.3",
     "autoprefixer": "^10.4.13",
     "chalk": "^5.2.0",
+    "cypress": "^12.6.0",
     "jsdom": "^21.1.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",

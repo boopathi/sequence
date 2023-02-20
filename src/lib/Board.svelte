@@ -54,6 +54,11 @@
             class:ring-2={isFrozen}
             class:rounded={!isFrozen}
             tabindex="0"
+            data-card={cell}
+            data-row={i}
+            data-col={j}
+            data-frozen={isFrozen}
+            data-state={state}
             role="button"
             aria-label={`${cardname(cell)}. row ${i + 1} column ${j + 1}`}
             on:dblclick={(e) => {
