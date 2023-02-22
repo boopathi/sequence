@@ -3,12 +3,15 @@
   import Modal from "./Modal.svelte";
   import Setting from "./Setting.svelte";
   import { themeChange } from "theme-change";
-  import { Game, possibleGames, type GameSetup } from "./game";
+  import { BoardState, Game, possibleGames, type GameSetup } from "./game";
   import Chip from "./Chip.svelte";
+  import { Card as CardEnum } from "./board-config";
+  import Card from "./Card.svelte";
 
   export let gameSetup: GameSetup;
   export let reset: () => void;
   export let doubleClick: boolean;
+  export let showTwoSides: boolean;
   export let fontSize: number;
   export let game: Game;
   export let chipColors: string[];
@@ -125,6 +128,24 @@
       <input type="checkbox" class="checkbox" bind:checked={doubleClick} />
     </Setting>
 
+    <Setting name="Card View">
+      <div class="flex gap-2 select-none">
+        <input type="checkbox" class="invisible" bind:checked={showTwoSides} />
+        <div
+          class="relative w-16 h-20 border-2 rounded"
+          class:border-success={!showTwoSides}
+        >
+          <Card card={CardEnum.SA} {fontSize} showTwoSides={false} />
+        </div>
+        <div
+          class="relative w-16 h-20 border-2 rounded"
+          class:border-success={showTwoSides}
+        >
+          <Card card={CardEnum.SA} {fontSize} showTwoSides={true} />
+        </div>
+      </div>
+    </Setting>
+
     <div class="grid grid-cols-2 gap-4">
       <button
         class="btn btn-sm btn-outline"
@@ -143,12 +164,14 @@
           localStorage.setItem("doubleClick", doubleClick.toString());
           localStorage.setItem("fontSize", fontSize.toString());
           localStorage.setItem("chipColors", JSON.stringify(chipColors));
+          localStorage.setItem("showTwoSides", showTwoSides.toString());
         }}
         on:keypress={() => {
           localStorage.setItem("gameSetup", gameSetup);
           localStorage.setItem("doubleClick", doubleClick.toString());
           localStorage.setItem("fontSize", fontSize.toString());
           localStorage.setItem("chipColors", JSON.stringify(chipColors));
+          localStorage.setItem("showTwoSides", showTwoSides.toString());
         }}
       >
         Save

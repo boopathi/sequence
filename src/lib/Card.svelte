@@ -6,7 +6,7 @@
   export { klass as class };
 
   export let fontSize: number;
-  export let isFrozen = false;
+  export let showTwoSides: boolean;
 
   let [suit, ...rest] = Card[card];
   let suitSymbol: string;
@@ -60,42 +60,45 @@
   {/if}
 </div>
 
-<div
-  class="invisible sm:visible absolute px-1 rotate-180 right-0 bottom-0 tracking-wide z-10"
-  class:text-sm={fontSize === 1}
-  class:text-base={fontSize === 2}
-  class:text-lg={fontSize === 3}
-  class:text-xl={fontSize === 4}
-  class:text-2xl={fontSize === 5}
->
-  {#if suit === "S" || suit === "C"}
-    <span class="text-base-content">
-      {suitSymbol}
-    </span>
-  {:else}
-    <span class="text-error">
-      {suitSymbol}
-    </span>
-  {/if}
-</div>
-<div
-  class="invisible sm:visible absolute px-1 rotate-180 left-0 bottom-0 tracking-wide z-10"
-  class:text-sm={fontSize === 1}
-  class:text-base={fontSize === 2}
-  class:text-lg={fontSize === 3}
-  class:text-xl={fontSize === 4}
-  class:text-2xl={fontSize === 5}
->
-  {#if suit === "S" || suit === "C"}
-    <span class="text-base-content" class:underline={num === "9"}>
-      {num}
-    </span>
-  {:else}
-    <span class="text-error" class:underline={num === "9"}>
-      {num}
-    </span>
-  {/if}
-</div>
+{#if showTwoSides}
+  <div
+    class="invisible sm:visible absolute px-1 rotate-180 right-0 bottom-0 tracking-wide z-10"
+    class:text-sm={fontSize === 1}
+    class:text-base={fontSize === 2}
+    class:text-lg={fontSize === 3}
+    class:text-xl={fontSize === 4}
+    class:text-2xl={fontSize === 5}
+  >
+    {#if suit === "S" || suit === "C"}
+      <span class="text-base-content">
+        {suitSymbol}
+      </span>
+    {:else}
+      <span class="text-error">
+        {suitSymbol}
+      </span>
+    {/if}
+  </div>
+
+  <div
+    class="invisible sm:visible absolute px-1 rotate-180 left-0 bottom-0 tracking-wide z-10"
+    class:text-sm={fontSize === 1}
+    class:text-base={fontSize === 2}
+    class:text-lg={fontSize === 3}
+    class:text-xl={fontSize === 4}
+    class:text-2xl={fontSize === 5}
+  >
+    {#if suit === "S" || suit === "C"}
+      <span class="text-base-content" class:underline={num === "9"}>
+        {num}
+      </span>
+    {:else}
+      <span class="text-error" class:underline={num === "9"}>
+        {num}
+      </span>
+    {/if}
+  </div>
+{/if}
 
 <div
   class="invisible sm:visible absolute w-full h-full grid place-content-center "

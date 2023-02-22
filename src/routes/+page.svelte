@@ -33,6 +33,7 @@
     isRemoving = !isRemoving;
   };
 
+  let showTwoSides = true;
   let doubleClick = false;
   let fontSize = 2;
   let chipColors = ["accent", "primary", "secondary"];
@@ -66,6 +67,10 @@
     let cc = localStorage.getItem("chipColors");
     if (cc) {
       chipColors = JSON.parse(cc);
+    }
+    let ts = localStorage.getItem("showTwoSides");
+    if (ts) {
+      showTwoSides = ts === "true";
     }
   });
 
@@ -186,6 +191,7 @@
       bind:isRemoving
       bind:doubleClick
       bind:chipColors
+      bind:showTwoSides
     />
   </main>
 
@@ -234,6 +240,7 @@
   bind:fontSize
   bind:game
   bind:chipColors
+  bind:showTwoSides
 />
 
 <About />

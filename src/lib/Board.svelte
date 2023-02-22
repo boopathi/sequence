@@ -15,6 +15,7 @@
   export let isRemoving: boolean;
   export let doubleClick: boolean;
   export let fontSize: number;
+  export let showTwoSides: boolean;
   export let chipColors: string[];
 
   export let playTurn: (loc: Location) => any;
@@ -76,7 +77,7 @@
               if (e.key === "Enter") playTurn([i, j]);
             }}
           >
-            <Card card={cell} class="" bind:fontSize {isFrozen}>
+            <Card card={cell} class="" bind:fontSize {showTwoSides}>
               <Chip
                 val={chip}
                 {visibility}
