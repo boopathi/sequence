@@ -404,9 +404,9 @@ export class Board {
 
     const result = previousResult;
 
-    const frozen = structuredClone(
+    const frozen = JSON.parse(JSON.stringify(
       previousResult.completed.map((c) => c.locs).flat(1),
-    );
+    ));
 
     for (const completion of [
       rowCompletion,
