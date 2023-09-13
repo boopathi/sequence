@@ -404,9 +404,9 @@ export class Board {
 
     const result = previousResult;
 
-    const frozen = JSON.parse(JSON.stringify(
-      previousResult.completed.map((c) => c.locs).flat(1),
-    ));
+    const frozen = JSON.parse(
+      JSON.stringify(previousResult.completed.map((c) => c.locs).flat(1)),
+    );
 
     for (const completion of [
       rowCompletion,
