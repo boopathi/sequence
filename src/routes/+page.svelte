@@ -1,281 +1,187 @@
 <script lang="ts">
-  import {
-    possibleGames,
-    type BoardState,
-    type Game,
-    type GameSetup,
-  } from "$lib/game";
-  import Chip from "$lib/Chip.svelte";
-  import Board from "$lib/Board.svelte";
-  import { createGame } from "$lib/store";
-  import type { Location } from "$lib/board-config";
-  import Title from "$lib/Title.svelte";
-  import { failure } from "$lib/toast";
-  import { onMount } from "svelte";
-  import About from "$lib/About.svelte";
-  import Options from "$lib/Options.svelte";
-  import Modal from "$lib/Modal.svelte";
-  import Setting from "$lib/Setting.svelte";
+  /**
+   * v0 by Vercel.
+   * @see https://v0.dev/t/bfdClQDE1Pn
+   */
 
-  let gameSetup: GameSetup = "1vs1";
-
-  let gameStore = createGame(gameSetup);
-
-  $: gameSetup, gameStore.reset(gameSetup);
-
-  let game: Game;
-  let currentChip: BoardState;
-  let score: { team: BoardState; score: number }[];
-
-  let isRemoving = false;
-
-  let remove = () => {
-    isRemoving = !isRemoving;
-  };
-
-  let showTwoSides = true;
-  let doubleClick = false;
-  let fontSize = 2;
-  let chipColors = ["accent", "primary", "secondary"];
-
-  let isDone: BoardState | false = false;
-  let winner: BoardState;
-  let isDoneModal: any;
-  $: game,
-    (isDone = game.isDone()),
-    isDone && (winner = isDone) && isDoneModal.click();
-
-  onMount(() => {
-    let gs = localStorage.getItem("gameSetup") as GameSetup;
-    if (gs) {
-      gs = gs as GameSetup;
-      if (possibleGames.hasOwnProperty(gs)) {
-        gameSetup = gs;
-      }
-    }
-    let dc = localStorage.getItem("doubleClick");
-    if (dc) {
-      doubleClick = dc === "true";
-    }
-    let fs = localStorage.getItem("fontSize");
-    if (fs) {
-      fontSize = parseInt(fs, 10);
-      if (isNaN(fontSize)) {
-        fontSize = 3;
-      }
-    }
-    let cc = localStorage.getItem("chipColors");
-    if (cc) {
-      chipColors = JSON.parse(cc);
-    }
-    let ts = localStorage.getItem("showTwoSides");
-    if (ts) {
-      showTwoSides = ts === "true";
-    }
-  });
-
-  let playTurn = (loc: Location) => {
-    try {
-      if (isRemoving) {
-        gameStore.remove(loc);
-        isRemoving = false;
-      } else {
-        gameStore.playTurn(loc);
-      }
-    } catch (e) {
-      if (e instanceof Error) failure(e.message);
-      else failure(e as any);
-    }
-  };
-
-  let undo = () => {
-    try {
-      gameStore.undo();
-      isRemoving = false;
-    } catch (e) {
-      if (e instanceof Error) failure(e.message);
-      else failure(e as any);
-    }
-  };
-  let reset = () => {
-    try {
-      gameStore.reset(gameSetup);
-      isRemoving = false;
-    } catch (e) {
-      if (e instanceof Error) failure(e.message);
-      else failure(e as any);
-    }
-  };
-
-  gameStore.subscribe((g) => {
-    game = g;
-    score = game.score();
-    currentChip = game.currentChip();
-  });
+  import logo from "$lib/images/apple-icon.png";
+  import PlayingCardIcon from "$lib/svgs/PlayingCard.svelte";
+  import multiplayerIcon from "$lib/images/multiplayer-2.png";
+  import Balloon from "$lib/svgs/Balloon.svelte";
+  import PlaynowButton from "$lib/PlaynowButton.svelte";
+  import setupImage from "$lib/images/setup-1.png";
+  import playTurnImage from "$lib/images/play-turn-1.png";
+  import CircleFour from "$lib/svgs/CircleFour.svelte";
+  import PlayCard from "$lib/svgs/PlayCard.svelte";
+  import Strategy from "$lib/svgs/Strategy.svelte";
+  import Corners from "$lib/svgs/Corners.svelte";
+  import Goal from "$lib/svgs/Goal.svelte";
+  import Jacks from "$lib/svgs/Jacks.svelte";
+  import ReadmoreButton from "$lib/ReadmoreButton.svelte";
 </script>
 
-<div class="max-w-[960px] m-auto">
-  <header
-    class="min-h-16 mb-6 sm:mb-2 px-2 grid gap-2 grid-cols-3 items-center bg-base-100"
-  >
-    <div>
-      <Title />
-    </div>
-
-    <div class="flex justify-center place-items-center portrait:invisible">
-      <div class="btn-group">
-        <button
-          on:click={undo}
-          disabled={!game.hasUndo()}
-          class="btn btn-outline btn-xs"
-          class:btn-disabled={!game.hasUndo()}
-        >
-          Undo
-        </button>
-        <label
-          for="options-modal"
-          class="btn btn-outline btn-xs"
-          role="menuitem"
-          tabindex="0"
-        >
-          Options
-        </label>
-        <label
-          for="about-modal"
-          class="btn btn-outline btn-xs"
-          role="menuitem"
-          tabindex="0"
-        >
-          About
-        </label>
-        <button
-          class="uppercase btn btn-outline btn-xs"
-          class:bg-error={isRemoving}
-          disabled={!game.hasUndo()}
-          on:click={remove}
-        >
-          {#if isRemoving}
-            Cancel
-          {:else}
-            Remove
-          {/if}
-        </button>
-      </div>
-    </div>
-
-    <div class="grid grid-flow-col items-center justify-end gap-2 pr-2">
-      {#each score as s, i}
-        {@const isCurrent = s.team === currentChip}
-        <div
-          class={`indicator mx-2 rounded-full ring ring-offset-base-100 ring-offset-2 ${
-            isCurrent ? "ring-success" : "ring-neutral"
-          }`}
-        >
-          <span class="indicator-item badge badge-primary">{s.score}</span>
-          <Chip
-            val={s.team}
-            class={`${isCurrent ? "animate-spin" : ""}`}
-            bind:chipColors
-          />
-        </div>
-      {/each}
-    </div>
-  </header>
-
-  <main>
-    <Board
-      {game}
-      {playTurn}
-      bind:fontSize
-      bind:currentChip
-      bind:isRemoving
-      bind:doubleClick
-      bind:chipColors
-      bind:showTwoSides
-    />
-  </main>
-
-  <footer>
-    <div
-      class="landscape:invisible btm-nav btm-nav-md border-t text-sm uppercase"
+<main class="">
+  <section class="w-full bg-gradient-to-b from-gray-900 to-gray-700">
+    <header
+      class="flex h-16 items-center px-4 md:px-6 bg-gradient-to-br from-gray-800 to-gray-700"
     >
-      <button
-        on:click={undo}
-        disabled={!game.hasUndo()}
-        class:disabled={!game.hasUndo()}
-        class="uppercase"
-      >
-        UNDO
-      </button>
-
-      <button
-        class:bg-error={isRemoving}
-        class:text-error-content={isRemoving}
-        disabled={!game.hasUndo()}
-        on:click={remove}
-        class="uppercase"
-      >
-        {#if isRemoving}
-          Cancel
-        {:else}
-          Remove
-        {/if}
-      </button>
-
-      <label for="about-modal" class="uppercase" role="menuitem" tabindex="0">
-        About
-      </label>
-
-      <label for="options-modal" class="uppercase" role="menuitem" tabindex="0">
-        Options
-      </label>
-    </div>
-  </footer>
-</div>
-
-<Options
-  bind:gameSetup
-  bind:doubleClick
-  {reset}
-  bind:fontSize
-  bind:game
-  bind:chipColors
-  bind:showTwoSides
-/>
-
-<About />
-
-<label for="game-over-modal" class="invisible" bind:this={isDoneModal} />
-<Modal title="Game over" modalName="game-over-modal" closable={false}>
-  <div class="form-control grid grid-flow-row gap-4">
-    <h2 class="text-2xl font-bold flex gap-2 place-content-center">
-      <Chip val={winner} bind:chipColors /> wins!
-    </h2>
-    <div class="flex justify-center gap-2">
-      {#each score as s, i}
-        <div class="flex flex-col items-center">
-          <Chip val={s.team} bind:chipColors />
-          <span class="text-2xl font-bold">{s.score}</span>
+      <a class="mr-6" href="/">
+        <img alt="Logo" class="h-8 w-8" height={32} src={logo} width={32} />
+        <span class="sr-only">Sequence Game</span>
+      </a>
+      <nav class="ml-auto">
+        <ul class="flex gap-8">
+          <li>
+            <a class="text-white" href="/">Home</a>
+          </li>
+          <li>
+            <a class="text-white" href="/game">Play Now!</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <section class="w-full py-32">
+      <div class="container mx-auto px-4 md:px-6 text-center">
+        <img
+          alt="Logo"
+          class="mx-auto mb-16 aspect-square object-cover"
+          height={100}
+          src={logo}
+          width={100}
+        />
+        <h1
+          class="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl text-white"
+        >
+          Sequence - The Board Game
+        </h1>
+        <p class="mx-auto max-w-[700px] text-lg mt-6 text-white">
+          A fun and challenging game that requires strategic skills to win. Play
+          with cards and enhance your strategic thinking.
+        </p>
+        <p class="">
+          <PlaynowButton />
+          <ReadmoreButton />
+        </p>
+      </div>
+    </section>
+    <section class="w-full py-24 bg-gradient-to-b from-gray-800 to-gray-700">
+      <div class="px-4 md:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="flex flex-col items-center space-y-4">
+            <PlayingCardIcon />
+            <h3 class="text-2xl font-bold text-gray-100">Card-Based</h3>
+            <p class="text-gray-400">
+              Use cards to strategize your moves in Sequence.
+            </p>
+          </div>
+          <div class="flex flex-col items-center space-y-4">
+            <img alt="Multiplayer" src={multiplayerIcon} width="48" />
+            <h3 class="text-2xl font-bold text-gray-100">Multiplayer</h3>
+            <p class="text-gray-400">
+              Play competitively with friends, from 2 up to 12 players using
+              this app as a companion to your physical cards.
+            </p>
+          </div>
+          <div class="flex flex-col items-center space-y-4">
+            <Balloon />
+            <h3 class="text-2xl font-bold text-gray-100">Fun</h3>
+            <p class="text-gray-400">
+              A game that is not just challenging, but also a lot of fun to
+              play.
+            </p>
+          </div>
         </div>
-      {/each}
-    </div>
-    <Setting name="Wrong move??">
-      <button
-        class="btn btn-sm"
-        on:click={() => {
-          undo();
-          isDoneModal.click();
-        }}>UNDO</button
+      </div>
+    </section>
+    <section class="w-full py-24 bg-gradient-to-br from-gray-900 to-gray-800">
+      <div class="container mx-auto px-4 md:px-6 text-center">
+        <h2 class="text-4xl font-bold text-white mb-32">How to Play</h2>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 gap-y-32"
+        >
+          <div>
+            <CircleFour class="mx-auto" />
+            <h3 class="text-2xl font-bold text-white mt-4">Setup</h3>
+            <p class="text-gray-300 mt-2">
+              The game starts with each player being dealt cards. The board is
+              set up with each card (except for the Jacks) pictured twice on it.
+            </p>
+          </div>
+          <div>
+            <PlayCard class="mx-auto" />
+            <h3 class="text-2xl font-bold text-white mt-4">Play</h3>
+            <p class="text-gray-300 mt-2">
+              Players take turns playing a card from their hand and then placing
+              a chip on one of the spaces that match this card. Get five of your
+              team's chips in a row to score a Sequence.
+            </p>
+          </div>
+          <div>
+            <Strategy class="mx-auto" />
+            <h3 class="text-2xl font-bold text-white mt-4">Strategize</h3>
+            <p class="text-gray-300 mt-2">
+              Plan your moves carefully! Blocking your opponents while advancing
+              your own chips is part of the game. Strategy is key to winning
+              Sequence.
+            </p>
+          </div>
+          <div>
+            <Jacks class="mx-auto" />
+            <h3 class="text-2xl font-bold text-white mt-4">
+              The Role of Jacks
+            </h3>
+            <p class="text-gray-300 mt-2">
+              Jacks are wild cards. Two-Eyed Jacks can represent any card and
+              can be used to place your chip on any open space. One-Eyed Jacks
+              can remove an opponent's chip from a space.
+            </p>
+          </div>
+          <div>
+            <Corners class="mx-auto" />
+            <h3 class="text-2xl font-bold text-white mt-4">Corner Slots</h3>
+            <p class="text-gray-300 mt-2">
+              The four corner spaces on the board are free spaces and count
+              toward a Sequence. Use them wisely!
+            </p>
+          </div>
+          <div>
+            <Goal class="mx-auto" />
+            <h3 class="text-2xl font-bold text-white mt-4">Goal of the Game</h3>
+            <p class="text-gray-300 mt-2">
+              The goal of the game is to be the first player or team to score
+              two Sequences. A Sequence is a connected series of five of the
+              same color chip either up or down, across or diagonally on the
+              game surface.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="w-full bg-gradient-to-br from-gray-900 to-gray-800">
+      <div class="container mx-auto px-4 md:px-6 text-center">
+        <PlaynowButton />
+        <ReadmoreButton />
+      </div>
+    </section>
+
+    <footer class="w-full py-12 bg-gradient-to-br from-gray-800 to-gray-700">
+      <div
+        class="px-4 md:px-6 flex flex-col md:flex-row justify-between items-center"
       >
-    </Setting>
-    <Setting name="Start a new Game">
-      <button
-        class="btn btn-sm"
-        on:click={() => {
-          reset();
-          isDoneModal.click();
-        }}>Restart</button
-      >
-    </Setting>
-  </div>
-</Modal>
+        <div class="space-y-2 md:space-y-0 md:space-x-4">
+          <a class="text-gray-300" href="https://github.com/boopathi">GitHub</a>
+        </div>
+        <div class="space-y-2 md:space-y-0 md:space-x-4 mt-4 md:mt-0">
+          <p class="text-gray-300">
+            Copyright © 2023 Boopathi Rajaa Nedunchezhiyan
+          </p>
+        </div>
+        <div class="mt-4 md:mt-0">
+          <a class="text-gray-300" href="https://twitter.com/heisenbugger"
+            >Twitter</a
+          >
+        </div>
+      </div>
+    </footer>
+  </section>
+</main>

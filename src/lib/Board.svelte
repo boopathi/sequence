@@ -1,11 +1,5 @@
 <script lang="ts">
-  import {
-    boardConfig,
-    Space,
-    type Location,
-    Card as CardEnum,
-    cardname,
-  } from "./board-config";
+  import { boardConfig, Space, type Location, cardname } from "./board-config";
   import Card from "./Card.svelte";
   import Chip from "./Chip.svelte";
   import { BoardState, CompletionPath, Game } from "./game";
