@@ -9,8 +9,6 @@
   import multiplayerIcon from "$lib/images/multiplayer-2.png";
   import Balloon from "$lib/svgs/Balloon.svelte";
   import PlaynowButton from "$lib/PlaynowButton.svelte";
-  import setupImage from "$lib/images/setup-1.png";
-  import playTurnImage from "$lib/images/play-turn-1.png";
   import CircleFour from "$lib/svgs/CircleFour.svelte";
   import PlayCard from "$lib/svgs/PlayCard.svelte";
   import Strategy from "$lib/svgs/Strategy.svelte";
@@ -18,28 +16,13 @@
   import Goal from "$lib/svgs/Goal.svelte";
   import Jacks from "$lib/svgs/Jacks.svelte";
   import ReadmoreButton from "$lib/ReadmoreButton.svelte";
+  import Footer from "$lib/Footer.svelte";
+  import Header from "$lib/Header.svelte";
 </script>
 
 <main class="">
   <section class="w-full bg-gradient-to-b from-gray-900 to-gray-700">
-    <header
-      class="flex h-16 items-center px-4 md:px-6 bg-gradient-to-br from-gray-800 to-gray-700"
-    >
-      <a class="mr-6" href="/">
-        <img alt="Logo" class="h-8 w-8" height={32} src={logo} width={32} />
-        <span class="sr-only">Sequence Game</span>
-      </a>
-      <nav class="ml-auto">
-        <ul class="flex gap-8">
-          <li>
-            <a class="text-white" href="/">Home</a>
-          </li>
-          <li>
-            <a class="text-white" href="/game">Play Now!</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <Header />
     <section class="w-full py-32">
       <div class="container mx-auto px-4 md:px-6 text-center">
         <img
@@ -164,24 +147,6 @@
       </div>
     </section>
 
-    <footer class="w-full py-12 bg-gradient-to-br from-gray-800 to-gray-700">
-      <div
-        class="px-4 md:px-6 flex flex-col md:flex-row justify-between items-center"
-      >
-        <div class="space-y-2 md:space-y-0 md:space-x-4">
-          <a class="text-gray-300" href="https://github.com/boopathi">GitHub</a>
-        </div>
-        <div class="space-y-2 md:space-y-0 md:space-x-4 mt-4 md:mt-0">
-          <p class="text-gray-300">
-            Copyright © 2023 Boopathi Rajaa Nedunchezhiyan
-          </p>
-        </div>
-        <div class="mt-4 md:mt-0">
-          <a class="text-gray-300" href="https://twitter.com/heisenbugger"
-            >Twitter</a
-          >
-        </div>
-      </div>
-    </footer>
+    <Footer />
   </section>
 </main>
