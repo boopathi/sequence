@@ -3,7 +3,7 @@
 </script>
 
 <header
-  class="flex h-16 items-center px-4 md:px-6 bg-gradient-to-br from-gray-800 to-gray-700"
+  class="flex h-16 items-center px-4 md:px-6 drop-shadow-lg border-b border-gray-900 backdrop-blur-xl"
 >
   <a class="mr-6" href="/">
     <img alt="Logo" class="h-8 w-8" height={32} src={logo} width={32} />

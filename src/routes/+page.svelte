@@ -4,49 +4,25 @@
    * @see https://v0.dev/t/bfdClQDE1Pn
    */
 
-  import logo from "$lib/images/apple-icon.png";
   import PlayingCardIcon from "$lib/svgs/PlayingCard.svelte";
   import multiplayerIcon from "$lib/images/multiplayer-2.png";
   import Balloon from "$lib/svgs/Balloon.svelte";
-  import PlaynowButton from "$lib/PlaynowButton.svelte";
   import CircleFour from "$lib/svgs/CircleFour.svelte";
   import PlayCard from "$lib/svgs/PlayCard.svelte";
   import Strategy from "$lib/svgs/Strategy.svelte";
   import Corners from "$lib/svgs/Corners.svelte";
   import Goal from "$lib/svgs/Goal.svelte";
   import Jacks from "$lib/svgs/Jacks.svelte";
-  import ReadmoreButton from "$lib/ReadmoreButton.svelte";
   import Footer from "$lib/Footer.svelte";
   import Header from "$lib/Header.svelte";
+  import Hero from "$lib/Hero.svelte";
+  import HomeActions from "$lib/HomeActions.svelte";
 </script>
 
 <main class="">
-  <section class="w-full bg-gradient-to-b from-gray-900 to-gray-700">
+  <section class="w-full hero-bg-image">
     <Header />
-    <section class="w-full py-32">
-      <div class="container mx-auto px-4 md:px-6 text-center">
-        <img
-          alt="Logo"
-          class="mx-auto mb-16 aspect-square object-cover"
-          height={100}
-          src={logo}
-          width={100}
-        />
-        <h1
-          class="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl text-white"
-        >
-          Sequence - The Board Game
-        </h1>
-        <p class="mx-auto max-w-[700px] text-lg mt-6 text-white">
-          A fun and challenging game that requires strategic skills to win. Play
-          with cards and enhance your strategic thinking.
-        </p>
-        <p class="">
-          <PlaynowButton />
-          <ReadmoreButton />
-        </p>
-      </div>
-    </section>
+    <Hero />
     <section class="w-full py-24 bg-gradient-to-b from-gray-800 to-gray-700">
       <div class="px-4 md:px-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -142,8 +118,7 @@
     </section>
     <section class="w-full bg-gradient-to-br from-gray-900 to-gray-800">
       <div class="container mx-auto px-4 md:px-6 text-center">
-        <PlaynowButton />
-        <ReadmoreButton />
+        <HomeActions class="justify-center" />
       </div>
     </section>
 

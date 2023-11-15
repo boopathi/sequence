@@ -49,3 +49,15 @@
     height: calc(100vh - 15rem);
   }
 }
+
+.hero-bg-image {
+  @apply overflow-hidden relative;
+}
+
+.hero-bg-image::before {
+  @apply block scale-110 bg-cover absolute right-0 left-0 w-full h-full;
+  z-index: -1;
+  filter: brightness(0.25) blur(4px);
+  content: "";
+  background: url("$lib/images/sequence-bg.webp") no-repeat top center;
+}

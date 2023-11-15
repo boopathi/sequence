@@ -38,6 +38,7 @@
   "dependencies": {
     "@zerodevx/svelte-toast": "^1.0.0-rc.1",
     "daisyui": "^4.0.5",
+    "svelte-parallax": "^0.6.0",
     "theme-change": "^2.5.0"
   }
 }
