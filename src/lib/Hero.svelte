@@ -7,7 +7,7 @@
 <Parallax
   sections={1}
   threshold={{ top: -1, bottom: 0.8 }}
-  config={{ stiffness: 0.9, damping: 1 }}
+  config={{ stiffness: 1, damping: 1 }}
 >
   <ParallaxLayer rate={-0.5}>
     <section class="w-full">
